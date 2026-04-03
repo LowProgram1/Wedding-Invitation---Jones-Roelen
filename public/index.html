@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>J&R | Wedding Invitation</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='11' cy='18' r='7' fill='none' stroke='%23b89146' stroke-width='2.5'/%3E%3Ccircle cx='21' cy='14' r='7' fill='none' stroke='%23b89146' stroke-width='2.5'/%3E%3C/svg%3E" />
+    <meta name="description" content="A romantic wedding invitation with timeline, gallery, event details, countdown, and RSVP." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="floating-layer" id="floatingLayer" aria-hidden="true"></div>
+
+    <header class="navbar" id="navbar">
+      <a class="brand" href="#hero"><svg class="brand-ring" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="14" r="5"/><circle cx="16" cy="10" r="5"/></svg>J &amp; R</a>
+      <nav id="desktopNav">
+        <a href="#hero">Home</a>
+        <a href="#details">Details</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#program">Program</a>
+        <a href="#dress-code">Dress Code</a>
+        <a href="#gift-guide">Gift Guide</a>
+        <a href="#rsvp">RSVP</a>
+      </nav>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-menu-backdrop" id="mobileMenuBackdrop"></div>
+      <nav class="mobile-menu-nav">
+        <a href="#hero">Home</a>
+        <a href="#details">Details</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#program">Program</a>
+        <a href="#dress-code">Dress Code</a>
+        <a href="#gift-guide">Gift Guide</a>
+        <a href="#rsvp">RSVP</a>
+      </nav>
+    </div>
+
+    <main>
+      <section id="hero" class="hero section">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-intro">
+            <p class="eyebrow">WITH JOY</p>
+            <p class="eyebrow">YOU ARE INVITED TO</p>
+            <p class="eyebrow">THE WEDDING OF</p>
+          </div>
+          <h1 class="hero-title">Jones <span>&</span> Roelen</h1>
+          <p class="hero-month">JUNE</p>
+          <div class="hero-date-row">
+            <span class="hero-day-name">SATURDAY</span>
+            <div class="hero-date-divider"></div>
+            <span class="hero-day-num">27</span>
+            <div class="hero-date-divider"></div>
+            <span class="hero-time">AT 2:30 PM</span>
+          </div>
+          <p class="hero-year">2026</p>
+          <p class="hero-venue">Christ the King Cathedral</p>
+          <p class="hero-address">Alunan Avenue, City of Koronadal</p>
+          <a href="#rsvp" class="cta-btn">Open Invitation</a>
+        </div>
+      </section>
+
+      <section id="details" class="section section-soft">
+        <div class="section-hearts" id="detailsHearts" aria-hidden="true"></div>
+        <div class="container">
+          <h2 class="section-title">Event Details</h2>
+          <p class="details-subtitle">Join us for a day filled with love, laughter, and cherished memories</p>
+          <div class="event-overview-grid">
+            <div class="event-overview-card">
+              <div class="event-overview-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <h3>Ceremony</h3>
+              <p>June 27, 2026</p>
+              <p>2:30 PM</p>
+              <p>Christ the King Cathedral</p>
+            </div>
+            <div class="event-overview-card">
+              <div class="event-overview-icon filled">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </div>
+              <h3>Reception</h3>
+              <p>June 27, 2026</p>
+              <p>5:00 PM</p>
+              <p>Maya Hall, Cinco Niñas</p>
+            </div>
+          </div>
+
+          <h2 class="section-title details-venue-title">Ceremony &amp; Reception</h2>
+          <p class="details-subtitle">Where we'll celebrate our special day</p>
+          <div class="details-grid">
+            <article class="detail-card">
+              <img class="detail-image" src="/uploads/venues/1774948496967-qhnap977.jpg" alt="Ceremony venue" />
+              <p class="detail-venue-name">Christ the King Cathedral</p>
+              <p class="detail-address">
+                <svg class="pin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Alunan Avenue, City of Koronadal
+              </p>
+              <a
+                class="detail-map-btn"
+                href="https://maps.google.com/?q=Christ+the+King+Cathedral+Koronadal"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Open in Google Maps
+              </a>
+            </article>
+            <article class="detail-card">
+              <img class="detail-image" src="/uploads/venues/1774949047022-bfh6fubq.png" alt="Reception venue" />
+              <p class="detail-venue-name">Maya Hall, Cinco Niñas</p>
+              <p class="detail-address">
+                <svg class="pin-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Zone 1, Gensan Drive, Koronadal City
+              </p>
+              <a
+                class="detail-map-btn"
+                href="https://maps.app.goo.gl/nemXBD6tXm5AykTH6"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Open in Google Maps
+              </a>
+            </article>
+          </div>
+          <div class="countdown-wrap">
+            <h1 class="countdown-heading">Countdown To Our Big Day</h1>
+            <p class="countdown-tagline">Until we say &ldquo;I do&rdquo;</p>
+            <div id="countdown" class="countdown">
+              <div><span id="days">00</span><small>Days</small></div>
+              <div><span id="hours">00</span><small>Hours</small></div>
+              <div><span id="minutes">00</span><small>Minutes</small></div>
+              <div><span id="seconds">00</span><small>Seconds</small></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gallery" class="section">
+        <div class="container">
+          <h2 class="section-title">Our Gallery</h2>
+          <p class="gallery-subtitle">Moments we've cherished together</p>
+          <div class="gallery-grid">
+            <div class="gallery-item"><img src="/uploads/gallery/1.jpg" alt="Pre-wedding photo 1" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/2.jpeg" alt="Pre-wedding photo 2" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/3.jpg" alt="Pre-wedding photo 3" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/4.jpeg" alt="Pre-wedding photo 4" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/5.jpg" alt="Pre-wedding photo 5" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/6.jpeg" alt="Pre-wedding photo 6" /></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
+      <section id="program" class="section section-soft">
+        <div class="section-hearts" id="programHearts" aria-hidden="true"></div>
+        <div class="container">
+          <h2 class="section-title">Wedding Program</h2>
+          <p class="program-subtitle">A glimpse into our special day</p>
+          <div class="program-list">
+            <div class="program-item">
+              <span class="program-time">2:00 PM</span>
+              <div class="program-dot"></div>
+              <div class="program-body">
+                <h3>Guest Arrival</h3>
+                <p>Guests are warmly welcomed and seated</p>
+              </div>
+            </div>
+            <div class="program-item">
+              <span class="program-time">2:30 PM</span>
+              <div class="program-dot"></div>
+              <div class="program-body">
+                <h3>Wedding Ceremony</h3>
+                <p>Christ the King Cathedral — Exchange of vows and rings</p>
+              </div>
+            </div>
+            <div class="program-item">
+              <span class="program-time">3:30 PM</span>
+              <div class="program-dot"></div>
+              <div class="program-body">
+                <h3>Photo Session</h3>
+                <p>Couple and family portraits at the cathedral grounds</p>
+              </div>
+            </div>
+            <div class="program-item">
+              <span class="program-time">5:00 PM</span>
+              <div class="program-dot"></div>
+              <div class="program-body">
+                <h3>Reception</h3>
+                <p>Maya Hall, Cinco Niñas — Cocktail hour and dinner</p>
+              </div>
+            </div>
+            <div class="program-item">
+              <span class="program-time">6:00 PM</span>
+              <div class="program-dot"></div>
+              <div class="program-body">
+                <h3>Program Proper</h3>
+                <p>First dance, toasts, and heartfelt messages</p>
+              </div>
+            </div>
+            <div class="program-item">
+              <span class="program-time">7:30 PM</span>
+              <div class="program-dot"></div>
+              <div class="program-body">
+                <h3>Dinner &amp; Celebration</h3>
+                <p>Feast, dancing, and an evening of joyful memories</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
+      <section id="dress-code" class="section">
+        <div class="container dress-wrap">
+          <h2 class="section-title">Dress Code</h2>
+          <p class="dress-subtitle">Formal attire requested. We invite you to dress in elegant shades that complement our wedding palette</p>
+
+          <div class="dress-carousel-single dress-carousel" data-carousel>
+            <div class="dress-carousel-track">
+              <div class="dress-carousel-slide"><img src="/uploads/dressCode/dress-1.jpg" alt="Dress code sample 1" onerror="this.src='/uploads/dressCode/placeholder.svg';this.onerror=null;" /></div>
+              <div class="dress-carousel-slide"><img src="/uploads/dressCode/dress-2.jpg" alt="Dress code sample 2" onerror="this.src='/uploads/dressCode/placeholder.svg';this.onerror=null;" /></div>
+              <div class="dress-carousel-slide"><img src="/uploads/dressCode/dress-3.jpg" alt="Dress code sample 3" onerror="this.src='/uploads/dressCode/placeholder.svg';this.onerror=null;" /></div>
+              <div class="dress-carousel-slide"><img src="/uploads/dressCode/dress-4.jpg" alt="Dress code sample 4" onerror="this.src='/uploads/dressCode/placeholder.svg';this.onerror=null;" /></div>
+              <div class="dress-carousel-slide"><img src="/uploads/dressCode/dress-5.jpg" alt="Dress code sample 5" onerror="this.src='/uploads/dressCode/placeholder.svg';this.onerror=null;" /></div>
+            </div>
+            <div class="dress-carousel-dots"></div>
+          </div>
+
+          <p class="dress-note">Formal attire in soft, romantic tones is encouraged. If unavailable, smart casual is warmly welcome. Most of all, your presence means the world to us.</p>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
+      <section id="gift-guide" class="section section-soft">
+        <div class="section-hearts" id="giftHearts" aria-hidden="true"></div>
+        <div class="container gift-wrap">
+          <div class="gift-icon-wrap">🎁</div>
+          <h2 class="section-title">Gift Guide</h2>
+          <div class="gift-poem">
+            <p>With all that we have, we've been truly blessed.</p>
+            <p>Your presence and prayers are all that we request.</p>
+            <p>But if you desire to give nonetheless,</p>
+            <p>A monetary gift is one we suggest.</p>
+          </div>
+          <div class="gift-actions">
+            <button type="button" class="gift-btn" data-gift-type="gcash" data-gift-image="/uploads/qr/gcash.jpg" data-gift-label="GCash">GCash QR</button>
+            <button type="button" class="gift-btn gift-btn-outline" data-gift-type="bank" data-gift-image="/uploads/qr/landbank.jpg" data-gift-label="Bank">Bank QR</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
+      <section id="rsvp" class="section">
+        <div class="container rsvp-wrap">
+          <h2 class="section-title">RSVP</h2>
+
+          <form id="rsvpForm" class="rsvp-form">
+            <label>
+              Number of Guests
+              <input type="number" name="numberOfGuests" id="numberOfGuests" min="1" max="20" value="1" required />
+            </label>
+            <div id="guestNamesContainer" class="guest-names-container"></div>
+            <label>
+              Attendance
+              <select name="attendance" required>
+                <option value="">Select one</option>
+                <option value="yes">Joyfully Accepts</option>
+                <option value="no">Regretfully Declines</option>
+              </select>
+            </label>
+            <label>
+              Message
+              <textarea name="message" id="messageInput" rows="4" placeholder="Leave your love and prayers..."></textarea>
+            </label>
+            <p class="word-counter" id="wordCounter">0 / 100 words</p>
+            <button type="submit">Send RSVP</button>
+          </form>
+
+          <div id="rsvpSuccess" class="rsvp-success" aria-hidden="true">
+            <div class="rsvp-success-icon" id="rsvpSuccessIcon">💌</div>
+            <h3 class="rsvp-success-title" id="rsvpSuccessTitle">We received your RSVP!</h3>
+            <p class="rsvp-success-message" id="rsvpSuccessMessage"></p>
+            <p class="rsvp-success-names">— Jones &amp; Roelen</p>
+            <button id="submitAnotherBtn" class="rsvp-another-btn" type="button">Submit Another Response</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p class="footer-names">Jones &amp; Roelen</p>
+      <p class="footer-message">With grateful hearts, we can’t wait to celebrate this beautiful day with you.</p>
+    </footer>
+
+    <a href="#rsvp" class="mobile-rsvp-fab" aria-label="Go to RSVP section">RSVP</a>
+
+
+    <div id="validationModal" class="validation-modal" aria-hidden="true" role="alertdialog" aria-modal="true">
+      <div class="validation-modal-backdrop" id="validationBackdrop"></div>
+      <div class="validation-modal-card">
+        <div class="validation-modal-icon">⚠️</div>
+        <h3 class="validation-modal-title">Invalid Input Detected</h3>
+        <p class="validation-modal-message" id="validationMessage"></p>
+        <button class="validation-modal-btn" id="validationClose">Got it</button>
+      </div>
+    </div>
+
+    <div id="giftModal" class="gift-modal" aria-hidden="true">
+      <div class="gift-modal-backdrop" data-close-gift></div>
+      <div class="gift-modal-card" role="dialog" aria-modal="true" aria-labelledby="giftModalTitle">
+        <button type="button" class="gift-close" data-close-gift aria-label="Close gift modal">×</button>
+        <h3 id="giftModalTitle">Gift QR</h3>
+        <img id="giftModalImage" src="" alt="Gift QR code" />
+        <a id="giftDownloadLink" class="gift-download" href="#" download>Download Image</a>
+      </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <div id="galleryModal" class="gallery-modal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="gallery-modal-backdrop" id="galleryBackdrop"></div>
+      <button class="gallery-modal-close" id="galleryClose" aria-label="Close">&times;</button>
+      <button class="gallery-modal-nav gallery-modal-prev" id="galleryPrev" aria-label="Previous">&#8249;</button>
+      <div class="gallery-modal-img-wrap">
+        <img id="galleryModalImg" src="" alt="" />
+      </div>
+      <button class="gallery-modal-nav gallery-modal-next" id="galleryNext" aria-label="Next">&#8250;</button>
+      <p class="gallery-modal-counter" id="galleryCounter"></p>
+    </div>
+
+    <div id="dressModal" class="gallery-modal" aria-hidden="true" role="dialog" aria-modal="true">
+      <div class="gallery-modal-backdrop" id="dressModalBackdrop"></div>
+      <button class="gallery-modal-close" id="dressModalClose" aria-label="Close">&times;</button>
+      <button class="gallery-modal-nav gallery-modal-prev" id="dressModalPrev" aria-label="Previous">&#8249;</button>
+      <div class="gallery-modal-img-wrap" id="dressModalImgWrap">
+        <img id="dressModalImg" src="" alt="" />
+      </div>
+      <button class="gallery-modal-nav gallery-modal-next" id="dressModalNext" aria-label="Next">&#8250;</button>
+      <p class="gallery-modal-counter" id="dressModalCounter"></p>
+    </div>
+
+    <script src="/main.js"></script>
+  </body>
+</html>

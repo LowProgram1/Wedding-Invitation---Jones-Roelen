@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RSVP Responses — J&R</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Segoe UI', Inter, sans-serif;
+        background: #fdf6f0;
+        color: #3a2323;
+        min-height: 100vh;
+        padding: 2rem 1rem;
+      }
+
+      header { text-align: center; margin-bottom: 2rem; }
+      header h1 { font-size: 2rem; font-weight: 700; letter-spacing: 0.02em; }
+      header p { color: #7a5a5a; margin-top: 0.3rem; font-size: 0.95rem; }
+
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #edf9ee;
+        color: #1a6b35;
+        font-size: 0.75rem;
+        font-weight: 600;
+        border-radius: 999px;
+        padding: 0.25rem 0.75rem;
+        margin-top: 0.6rem;
+      }
+      .live-dot {
+        width: 7px; height: 7px;
+        background: #2ecc71;
+        border-radius: 50%;
+        animation: pulse 1.5s infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.5; transform: scale(0.7); }
+      }
+
+      .stats {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 2rem;
+      }
+      .stat-card {
+        background: #fff;
+        border-radius: 0.8rem;
+        padding: 1rem 1.8rem;
+        text-align: center;
+        box-shadow: 0 2px 12px rgba(58,35,35,0.08);
+        min-width: 130px;
+      }
+      .stat-card .num { font-size: 2rem; font-weight: 700; color: #b89146; }
+      .stat-card .label { font-size: 0.8rem; color: #7a5a5a; margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+      .toolbar {
+        max-width: 860px;
+        margin: 0 auto 0.75rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .print-btn {
+        background: #b89146;
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 0.55rem 1.2rem;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        transition: filter 0.2s ease;
+      }
+      .print-btn:hover { filter: brightness(0.9); }
+
+      .table-wrap {
+        overflow-x: auto;
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 16px rgba(58,35,35,0.08);
+        max-width: 860px;
+        margin: 0 auto;
+      }
+      table { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+      thead tr { background: #f9eded; border-bottom: 2px solid #f0dada; }
+      th {
+        padding: 0.9rem 1rem;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: #7a5a5a;
+        white-space: nowrap;
+      }
+      td { padding: 0.85rem 1rem; border-bottom: 1px solid #f4eaea; vertical-align: middle; }
+      tr:last-child td { border-bottom: none; }
+      tr:hover td { background: #fdf4f4; }
+
+      .badge {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 0.2rem 0.7rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+      .badge.yes { background: #d4f4dd; color: #1a6b35; }
+      .badge.no  { background: #fde8e8; color: #8b2020; }
+
+      .msg-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.3rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+        color: #b89146;
+      }
+      .msg-btn:hover { background: #fdf0e0; }
+      .msg-btn:disabled { color: #d9c9c9; cursor: default; }
+      .msg-btn:disabled:hover { background: none; }
+
+      .del-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0.3rem;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #c0392b;
+        transition: background 0.2s;
+      }
+      .del-btn:hover { background: #fdecea; }
+
+      .empty { text-align: center; padding: 3rem 1rem; color: #9b7070; font-style: italic; }
+      .timestamp { font-size: 0.8rem; color: #9b7070; white-space: nowrap; }
+
+      /* Pagination */
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        margin-top: 1.25rem;
+        flex-wrap: wrap;
+      }
+      .page-btn {
+        border: 1px solid #e8d5c0;
+        background: #fff;
+        color: #5a4848;
+        border-radius: 0.5rem;
+        padding: 0.4rem 0.75rem;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: background 0.2s, color 0.2s;
+        min-width: 2.2rem;
+        text-align: center;
+      }
+      .page-btn:hover { background: #fdf0e0; }
+      .page-btn.active { background: #b89146; color: #fff; border-color: #b89146; font-weight: 700; }
+      .page-btn:disabled { opacity: 0.4; cursor: default; }
+      .page-info { font-size: 0.82rem; color: #9b7070; margin: 0 0.4rem; }
+
+      /* Message modal */
+      .msg-modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(20,10,10,0.5);
+        z-index: 100;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .msg-modal-backdrop.open { display: flex; }
+      .msg-modal-card {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 2rem;
+        max-width: 440px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(58,35,35,0.18);
+        position: relative;
+      }
+      .msg-modal-name { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.75rem; color: #3a2323; }
+      .msg-modal-text { font-style: italic; color: #5a4848; line-height: 1.75; font-size: 1rem; }
+      .msg-modal-close {
+        position: absolute; top: 0.8rem; right: 0.9rem;
+        background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #9b7070; line-height: 1;
+      }
+      .msg-modal-close:hover { color: #3a2323; }
+
+      /* Delete confirmation modal */
+      .del-modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(20,10,10,0.5);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .del-modal-backdrop.open { display: flex; }
+      .del-modal-card {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 2rem 1.75rem;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 20px 60px rgba(58,35,35,0.2);
+        text-align: center;
+        border-top: 4px solid #c0392b;
+      }
+      .del-modal-icon { font-size: 2.2rem; margin-bottom: 0.75rem; }
+      .del-modal-title { font-size: 1.2rem; font-weight: 700; color: #3a2323; margin-bottom: 0.5rem; }
+      .del-modal-msg { font-size: 0.93rem; color: #5a4848; line-height: 1.65; margin-bottom: 1.5rem; }
+      .del-modal-actions { display: flex; gap: 0.75rem; justify-content: center; }
+      .del-cancel-btn {
+        border: 1px solid #e8d5c0;
+        background: #fff;
+        color: #5a4848;
+        border-radius: 999px;
+        padding: 0.6rem 1.3rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .del-cancel-btn:hover { background: #fdf0e0; }
+      .del-confirm-btn {
+        background: #c0392b;
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 0.6rem 1.3rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: filter 0.2s;
+      }
+      .del-confirm-btn:hover { filter: brightness(0.9); }
+
+      /* ── Print guest list ── */
+      #printFrame { display: none; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>💌 RSVP Responses</h1>
+      <p>Jones &amp; Roelen — June 27, 2026</p>
+    </header>
+
+    <div class="stats">
+      <div class="stat-card"><div class="num" id="statTotal">—</div><div class="label">Total RSVPs</div></div>
+      <div class="stat-card"><div class="num" id="statGuests">—</div><div class="label">Total Guests</div></div>
+      <div class="stat-card"><div class="num" id="statAccepted">—</div><div class="label">Attending</div></div>
+      <div class="stat-card"><div class="num" id="statDeclined">—</div><div class="label">Declined</div></div>
+    </div>
+
+    <div class="toolbar">
+      <button class="print-btn" onclick="generateGuestList()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Generate Guest List
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Guest Name</th>
+            <th>Attendance</th>
+            <th style="text-align:center;">Message</th>
+            <th>Submitted</th>
+            <th style="text-align:center;"></th>
+          </tr>
+        </thead>
+        <tbody id="rsvpTableBody">
+          <tr><td colspan="6" class="empty">Loading responses…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" id="pagination"></div>
+
+    <!-- Delete confirmation modal -->
+    <div class="del-modal-backdrop" id="delModal">
+      <div class="del-modal-card">
+        <div class="del-modal-icon">🗑️</div>
+        <h3 class="del-modal-title">Delete RSVP Record</h3>
+        <p class="del-modal-msg" id="delModalMsg"></p>
+        <div class="del-modal-actions">
+          <button class="del-cancel-btn" id="delCancelBtn">Cancel</button>
+          <button class="del-confirm-btn" id="delConfirmBtn">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message modal -->
+    <div class="msg-modal-backdrop" id="msgModal">
+      <div class="msg-modal-card">
+        <button class="msg-modal-close" id="msgModalClose">&times;</button>
+        <p class="msg-modal-name" id="msgModalName"></p>
+        <p class="msg-modal-text" id="msgModalText"></p>
+      </div>
+    </div>
+
+    <iframe id="printFrame"></iframe>
+
+    <script>
+      const PER_PAGE = 10;
+      let allRows = [];
+      let currentPage = 1;
+
+      // Escape user-supplied strings before inserting into innerHTML
+      function esc(str) {
+        return String(str ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      // Message modal
+      const msgModal = document.getElementById("msgModal");
+      document.getElementById("msgModalClose").addEventListener("click", () => msgModal.classList.remove("open"));
+      msgModal.addEventListener("click", (e) => { if (e.target === msgModal) msgModal.classList.remove("open"); });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          msgModal.classList.remove("open");
+          closeDelModal();
+        }
+      });
+
+      // Delete confirmation modal
+      const delModal = document.getElementById("delModal");
+      let _delPendingId = null;
+
+      function openDelModal(id, label) {
+        _delPendingId = id;
+        // Always reset to confirm state before opening
+        document.getElementById("delModal").querySelector(".del-modal-title").textContent = "Delete RSVP Record";
+        document.getElementById("delModal").querySelector(".del-modal-icon").textContent = "🗑️";
+        document.getElementById("delConfirmBtn").style.display = "";
+        document.getElementById("delCancelBtn").textContent = "Cancel";
+        document.getElementById("delModalMsg").textContent = `Are you sure you want to delete the RSVP for ${label}? This cannot be undone.`;
+        delModal.classList.add("open");
+      }
+
+      function closeDelModal() {
+        delModal.classList.remove("open");
+        _delPendingId = null;
+      }
+
+      document.getElementById("delCancelBtn").addEventListener("click", closeDelModal);
+      delModal.addEventListener("click", (e) => { if (e.target === delModal) closeDelModal(); });
+
+      document.getElementById("delConfirmBtn").addEventListener("click", async () => {
+        const id = _delPendingId;
+        closeDelModal();
+        try {
+          const res = await fetch(`/api/rsvp/guest/${id}`, { method: "DELETE" });
+          if (res.ok) {
+            currentPage = 1;
+            await loadRsvps();
+          } else {
+            openErrModal("Could not delete the record. Please try again.");
+          }
+        } catch {
+          openErrModal("Failed to delete. Please check your connection and try again.");
+        }
+      });
+
+      function openErrModal(msg) {
+        document.getElementById("delModalMsg").textContent = msg;
+        document.getElementById("delModal").querySelector(".del-modal-title").textContent = "Something went wrong";
+        document.getElementById("delModal").querySelector(".del-modal-icon").textContent = "⚠️";
+        document.getElementById("delConfirmBtn").style.display = "none";
+        document.getElementById("delCancelBtn").textContent = "Close";
+        delModal.classList.add("open");
+        // reset after close
+        delModal.addEventListener("click", resetDelModal, { once: true });
+        document.getElementById("delCancelBtn").addEventListener("click", resetDelModal, { once: true });
+      }
+
+      function resetDelModal() {
+        document.getElementById("delModal").querySelector(".del-modal-title").textContent = "Delete RSVP Record";
+        document.getElementById("delModal").querySelector(".del-modal-icon").textContent = "🗑️";
+        document.getElementById("delConfirmBtn").style.display = "";
+        document.getElementById("delCancelBtn").textContent = "Cancel";
+      }
+
+      function openMsg(idx) {
+        const row = allRows[idx];
+        if (!row) return;
+        document.getElementById("msgModalName").textContent = row.name;
+        document.getElementById("msgModalText").textContent = `"${row.message}"`;
+        msgModal.classList.add("open");
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("rsvpTableBody");
+        const start = (currentPage - 1) * PER_PAGE;
+        const pageRows = allRows.slice(start, start + PER_PAGE);
+
+        if (!pageRows.length) {
+          tbody.innerHTML = '<tr><td colspan="6" class="empty">No responses yet.</td></tr>';
+          document.getElementById("pagination").innerHTML = "";
+          return;
+        }
+
+        tbody.innerHTML = pageRows.map((row, i) => {
+          const num = start + i + 1;
+          const hasMsg = row.message && row.message.trim().length > 0;
+          const msgBtn = `
+            <button class="msg-btn" ${hasMsg ? `onclick="openMsg(${row._idx})"` : "disabled"} title="${hasMsg ? "View message" : "No message"}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </button>`;
+          const delBtn = `
+            <button class="del-btn" onclick="deleteRecord(${row.guestId}, ${row._idx})" title="Delete this guest">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>`;
+
+          return `
+            <tr>
+              <td>${num}</td>
+              <td>${esc(row.name)}</td>
+              <td><span class="badge ${esc(row.attendance)}">${row.attendance === "yes" ? "Attending" : "Declined"}</span></td>
+              <td style="text-align:center;">${msgBtn}</td>
+              <td class="timestamp">${esc(new Date(row.createdAt).toLocaleString())}</td>
+              <td style="text-align:center;">${delBtn}</td>
+            </tr>`;
+        }).join("");
+
+        renderPagination();
+      }
+
+      function renderPagination() {
+        const total = Math.ceil(allRows.length / PER_PAGE);
+        const pag = document.getElementById("pagination");
+        if (total <= 1) { pag.innerHTML = ""; return; }
+
+        let html = `<button class="page-btn" onclick="goPage(${currentPage - 1})" ${currentPage === 1 ? "disabled" : ""}>&#8249;</button>`;
+        for (let i = 1; i <= total; i++) {
+          html += `<button class="page-btn ${i === currentPage ? "active" : ""}" onclick="goPage(${i})">${i}</button>`;
+        }
+        html += `<button class="page-btn" onclick="goPage(${currentPage + 1})" ${currentPage === total ? "disabled" : ""}>&#8250;</button>`;
+        html += `<span class="page-info">Page ${currentPage} of ${total}</span>`;
+        pag.innerHTML = html;
+      }
+
+      function goPage(page) {
+        const total = Math.ceil(allRows.length / PER_PAGE);
+        if (page < 1 || page > total) return;
+        currentPage = page;
+        renderTable();
+        document.querySelector(".table-wrap").scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+
+      function deleteRecord(guestId, idx) {
+        if (guestId == null || guestId === "null" || guestId === "undefined") {
+          openErrModal("Unable to delete — please restart the server and resubmit the RSVP.");
+          return;
+        }
+        const row = allRows[idx];
+        const label = row ? `"${row.name}"` : "this guest";
+        openDelModal(guestId, label);
+      }
+
+      async function loadRsvps() {
+        try {
+          const res = await fetch("/api/rsvp");
+          const data = await res.json();
+          const records = data.records || [];
+
+          document.getElementById("statTotal").textContent = data.total ?? 0;
+          document.getElementById("statAccepted").textContent = records.filter(r => r.attendance === "yes").length;
+          document.getElementById("statDeclined").textContent = records.filter(r => r.attendance === "no").length;
+          document.getElementById("statGuests").textContent = records.reduce((sum, r) => sum + (r.numberOfGuests || 0), 0);
+
+          allRows = [];
+          records.forEach((r) => {
+            (r.guestNames || []).forEach((guest, idx) => {
+              const name = typeof guest === "object" ? guest.name : guest;
+              const guestId = typeof guest === "object" ? guest.id : null;
+              allRows.push({ name, guestId, attendance: r.attendance, message: idx === 0 ? (r.message || "") : "", createdAt: r.createdAt, recordId: r.id, isFirst: idx === 0, totalInGroup: r.guestNames.length });
+            });
+          });
+          // Stamp each row with its allRows index so onclick handlers use safe numeric refs
+          allRows.forEach((row, i) => { row._idx = i; });
+
+          renderTable();
+        } catch {
+          document.getElementById("rsvpTableBody").innerHTML = '<tr><td colspan="7" class="empty">Failed to load responses.</td></tr>';
+        }
+      }
+
+      function generateGuestList() {
+        const attending = allRows.filter(r => r.attendance === "yes");
+        const declined = [];
+
+        const listHTML = (rows) => rows.map((r, i) => `
+          <tr>
+            <td class="num">${i + 1}</td>
+            <td class="name">${r.name}</td>
+            <td class="check"></td>
+          </tr>`).join("");
+
+        const html = `<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <title>Guest List — Jones & Roelen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    @page { size: A4; margin: 20mm 18mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { font-family: 'Inter', sans-serif; color: #3a2323; background: #fff; }
+
+    .page { page-break-after: always; padding-bottom: 10mm; }
+    .page:last-child { page-break-after: auto; }
+
+    /* Header */
+    .header { text-align: center; margin-bottom: 8mm; padding-bottom: 6mm; border-bottom: 1.5px solid #e2bc84; position: relative; }
+
+    .rings {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 4mm;
+    }
+
+    .rings svg { width: 36px; height: 36px; }
+
+    .brand { font-family: 'Cormorant Garamond', serif; font-size: 28pt; font-weight: 700; letter-spacing: 0.04em; color: #3a2323; line-height: 1; }
+    .brand span { color: #b89146; }
+    .date { font-family: 'Cormorant Garamond', serif; font-size: 11pt; color: #7a5a5a; letter-spacing: 0.12em; margin-top: 2mm; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 4mm 0;
+    }
+    .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, #e2bc84, transparent); }
+    .divider-heart { color: #c07090; font-size: 10pt; }
+
+    .doc-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22pt;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.08em;
+      margin: 5mm 0 2mm;
+      color: #3a2323;
+    }
+
+    .section-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14pt;
+      font-weight: 600;
+      color: #b89146;
+      margin: 6mm 0 3mm;
+      padding-bottom: 1.5mm;
+      border-bottom: 1px solid #f0dada;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    th {
+      font-family: 'Inter', sans-serif;
+      font-size: 7pt;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9b7070;
+      padding: 2mm 3mm;
+      text-align: left;
+      border-bottom: 1px solid #f0dada;
+    }
+
+    th.check-th { text-align: center; width: 18mm; }
+
+    td { padding: 2.2mm 3mm; border-bottom: 1px solid #faeaea; font-size: 10pt; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fdf8f5; }
+
+    td.num { font-size: 8pt; color: #b89146; font-weight: 600; width: 8mm; }
+    td.name { font-family: 'Cormorant Garamond', serif; font-size: 12pt; }
+    td.check { text-align: center; }
+    td.check::after { content: "□"; font-size: 13pt; color: #c9a0a0; }
+
+    .footer {
+      text-align: center;
+      margin-top: 8mm;
+      padding-top: 4mm;
+      border-top: 1px solid #f0dada;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 9pt;
+      color: #9b7070;
+    }
+
+    .page-num { font-size: 8pt; color: #c9a0a0; text-align: right; margin-top: 3mm; }
+
+    .summary-box {
+      display: flex;
+      gap: 8mm;
+      margin: 4mm 0 6mm;
+      justify-content: center;
+    }
+    .summary-item {
+      text-align: center;
+      padding: 3mm 6mm;
+      border: 1px solid #e8d5c0;
+      border-radius: 6px;
+    }
+    .summary-item .s-num { font-family: 'Cormorant Garamond', serif; font-size: 20pt; font-weight: 700; color: #b89146; line-height: 1; }
+    .summary-item .s-label { font-size: 7pt; text-transform: uppercase; letter-spacing: 0.08em; color: #7a5a5a; margin-top: 1mm; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="rings">
+        <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="26" r="10" stroke="#b89146" stroke-width="2.5"/>
+          <circle cx="30" cy="22" r="10" stroke="#b89146" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="brand">Jones <span>&</span> Roelen</div>
+      <div class="date">SATURDAY · JUNE 27, 2026 · 2:30 PM</div>
+      <div class="date" style="margin-top:1mm;font-size:9pt;">Christ the King Cathedral, Koronadal City</div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-heart">♥</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="doc-title">Guest List</div>
+
+    <div class="summary-box">
+      <div class="summary-item"><div class="s-num">${attending.length}</div><div class="s-label">Total Guests</div></div>
+    </div>
+
+    <div class="section-heading">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      Attending (${attending.length})
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th class="check-th">Present ✓</th></tr></thead>
+      <tbody>${listHTML(attending)}</tbody>
+    </table>
+
+    <div class="footer">
+      "Two souls, one heart — thank you for being part of our story."
+    </div>
+  </div>
+</body>
+</html>`;
+
+        const frame = document.getElementById("printFrame");
+        frame.srcdoc = html;
+        frame.onload = () => {
+          frame.contentWindow.focus();
+          frame.contentWindow.print();
+        };
+      }
+
+      // Initial load + auto-refresh every 30s
+      loadRsvps();
+      setInterval(loadRsvps, 10000);
+    </script>
+  </body>
+</html>
