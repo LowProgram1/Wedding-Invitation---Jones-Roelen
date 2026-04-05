@@ -6,14 +6,27 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 
 ## Screenshots
 
+### Web (1280px)
+
 | | |
 |---|---|
-| ![Hero](screenshots/01-hero.png) | ![Event Details](screenshots/02-event-details.png) |
+| ![Hero](screenshots/web/01-hero.png) | ![Event Details](screenshots/web/02-event-details.png) |
 | **Hero — date, venue & countdown** | **Event Details — ceremony & reception** |
-| ![Wedding Program](screenshots/03-wedding-program.png) | ![RSVP](screenshots/04-rsvp.png) |
+| ![Wedding Program](screenshots/web/03-wedding-program.png) | ![RSVP](screenshots/web/04-rsvp.png) |
 | **Wedding Program — order of events** | **RSVP — guest submission form** |
-| ![Gift Guide](screenshots/05-gift-guide.png) | |
+| ![Gift Guide](screenshots/web/05-gift-guide.png) | |
 | **Gift Guide — GCash & Landbank QR** | |
+
+### Mobile (390px — iPhone)
+
+| | |
+|---|---|
+| ![Hero](screenshots/mobile/01-hero.png) | ![Event Details](screenshots/mobile/02-event-details.png) |
+| **Hero** | **Event Details** |
+| ![Wedding Program](screenshots/mobile/03-wedding-program.png) | ![RSVP](screenshots/mobile/04-rsvp.png) |
+| **Wedding Program** | **RSVP** |
+| ![Gift Guide](screenshots/mobile/05-gift-guide.png) | |
+| **Gift Guide** | |
 
 ---
 
