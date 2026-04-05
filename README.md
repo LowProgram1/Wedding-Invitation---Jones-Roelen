@@ -314,139 +314,187 @@ All unmatched `/api/` paths return `404 JSON` instead of redirecting. This preve
 
 ---
 
-## 12. Deploying to Hostinger Business Plan
+## 12. Deploying to Hostinger Business Plan (Manual Upload)
 
-Hostinger's Business shared hosting plan includes Node.js support, SSH access, and a free SSL certificate. Follow the steps below to deploy this project.
-
----
-
-### Step 1 — Log in to hPanel
-
-Go to [hpanel.hostinger.com](https://hpanel.hostinger.com) and open the dashboard for your domain.
+This guide covers deploying the site manually through Hostinger's **hPanel** — no Git or command-line tools required on your local machine. You only need a browser and a free SFTP client.
 
 ---
 
-### Step 2 — Enable Node.js
+### What you need before starting
 
-1. In hPanel, navigate to **Websites → your domain → Node.js**.
-2. Click **Enable**.
-3. Set:
-   - **Node.js version**: `20.x` (or the latest LTS available)
-   - **Application root**: the subfolder where your project will live (e.g., `jones-wedding` — avoid the `public_html` root if you have other sites)
-   - **Application startup file**: `server.js`
-4. Note the **application URL** and the **port** Hostinger assigns — you will need the port number.
+- Active Hostinger Business Plan with a domain attached
+- [FileZilla](https://filezilla-project.org/download.php) installed on your computer (free SFTP client)
+- The project folder on your computer
 
 ---
 
-### Step 3 — Upload project files via SFTP
+### Step 1 — Prepare the project folder locally
 
-Use an SFTP client such as [FileZilla](https://filezilla-project.org/) or your IDE's built-in SFTP:
-
-1. In hPanel, go to **Hosting → SSH Access** and enable SSH.  
-   Note your **SSH hostname**, **port**, **username**, and **password**.
-2. Connect with SFTP (same credentials as SSH, port is usually `65002` or as shown in hPanel).
-3. Navigate to the application root folder you set in Step 2.
-4. Upload everything **except** `node_modules/`:
+Before uploading, make sure your local project folder looks like this and does **not** include `node_modules/`:
 
 ```
-server.js
-package.json
-package-lock.json
-public/         (entire folder)
-uploads/        (entire folder with all images)
-data/           (folder — see note below)
+jones-roelen-wedInvitation/
+├── server.js
+├── package.json
+├── package-lock.json
+├── public/
+│   ├── index.html
+│   ├── main.js
+│   ├── styles.css
+│   └── 9vy5no94r1/
+│       └── gh18iuor8a/
+│           └── index.html
+├── uploads/
+│   ├── hero-Bg/
+│   ├── gallery/
+│   ├── venues/
+│   ├── dressCode/
+│   └── qr/
+└── data/
+    └── rsvps.json
 ```
 
-> **data/ folder**: Upload the folder itself. If `rsvps.json` already exists locally with real RSVP data you want to keep, upload it too. Otherwise, you can let the server create it on the first RSVP submission.
+> If `data/rsvps.json` does not exist yet, create the `data` folder and inside it create a file named `rsvps.json` with this content:
+> ```json
+> {"guestIdCounter":0,"records":[]}
+> ```
 
 ---
 
-### Step 4 — Install dependencies via SSH
+### Step 2 — Enable Node.js in hPanel
 
-1. In hPanel, open **SSH Access → Launch SSH Terminal** (browser terminal), or connect via your local terminal:
+1. Log in to [hpanel.hostinger.com](https://hpanel.hostinger.com).
+2. Click **Manage** next to your domain.
+3. In the left sidebar, find and click **Node.js** (under the Advanced section).
+4. Click **Enable Node.js**.
+5. Fill in the settings:
 
-```bash
-ssh your_username@your_hostname -p 65002
-```
+   | Setting | Value |
+   |---|---|
+   | Node.js version | `20.x` (choose the highest 20.x available) |
+   | Application root | `public_html` (or a subfolder like `wedding` if you prefer) |
+   | Application startup file | `server.js` |
 
-2. Navigate to your application root:
-
-```bash
-cd ~/jones-wedding
-```
-
-3. Install dependencies:
-
-```bash
-npm install --omit=dev
-```
+6. Click **Create** or **Save**.
+7. Hostinger will show you the **application URL** and the **port** assigned to your app. Note down the port number.
 
 ---
 
-### Step 5 — Set directory permissions
+### Step 3 — Get your SFTP credentials
 
-The server needs write access to the `data/` directory:
+1. In hPanel, go to **Hosting → FTP Accounts** (or search for "FTP" in the hPanel search bar).
+2. Note your:
+   - **FTP hostname** (e.g., `ftp.yourdomain.com`)
+   - **FTP username**
+   - **FTP password** (reset it here if you forgot)
+   - **Port**: `21`
+
+---
+
+### Step 4 — Connect FileZilla and upload files
+
+1. Open **FileZilla**.
+2. At the top, enter:
+   - **Host**: your FTP hostname (e.g., `ftp.yourdomain.com`)
+   - **Username**: your FTP username
+   - **Password**: your FTP password
+   - **Port**: `21`
+3. Click **Quickconnect**.
+4. On the right panel (remote server), navigate to the **Application root** folder you set in Step 2 (e.g., `public_html` or `wedding`).
+5. On the left panel (your computer), navigate to your project folder.
+6. Select and drag these items from left to right (**do not upload `node_modules/`**):
+
+   - `server.js`
+   - `package.json`
+   - `package-lock.json`
+   - `public/` folder
+   - `uploads/` folder
+   - `data/` folder
+
+7. Wait for all transfers to complete (shown in the transfer queue at the bottom).
+
+---
+
+### Step 5 — Install dependencies via hPanel Terminal
+
+Hostinger provides a browser-based terminal — no local SSH setup needed.
+
+1. In hPanel, search for **"Terminal"** or go to **Advanced → SSH Access → Launch Terminal**.
+2. In the terminal, navigate to your application folder:
+
+   ```bash
+   cd ~/public_html
+   ```
+   *(Replace `public_html` with your application root folder name if different.)*
+
+3. Install Node.js dependencies:
+
+   ```bash
+   npm install --omit=dev
+   ```
+
+   This reads `package.json` and installs only `express`. It will create a `node_modules/` folder on the server.
+
+---
+
+### Step 6 — Set file permissions for the data folder
+
+Still in the terminal, run:
 
 ```bash
 chmod 755 data
-chmod 644 data/rsvps.json   # only if the file already exists
+chmod 644 data/rsvps.json
 ```
 
----
-
-### Step 6 — Set environment variables (optional)
-
-If you need to set `PORT` or any other variable:
-
-1. In hPanel, go to **Node.js → Environment Variables**.
-2. Add:
-
-| Key | Value |
-|---|---|
-| `PORT` | The port number Hostinger assigned (shown in the Node.js panel) |
-| `NODE_ENV` | `production` |
-
-Hostinger typically sets `PORT` automatically — only add it manually if the app fails to bind.
+This ensures the server can write new RSVP entries to the file.
 
 ---
 
-### Step 7 — Start the application
+### Step 7 — Start the Node.js application
 
-1. In hPanel, go to **Node.js** and click **Restart** (or **Start** if not yet running).
-2. Wait a few seconds, then open your domain in a browser:
+1. Go back to hPanel → **Node.js**.
+2. Click **Restart App** (or **Start** if it hasn't started yet).
+3. After a few seconds, open your domain in a browser:
 
-```
-https://yourdomain.com
-```
+   ```
+   https://yourdomain.com
+   ```
 
-You should see the wedding landing page.
-
----
-
-### Step 8 — Enable SSL (HTTPS)
-
-1. In hPanel, go to **SSL → Let's Encrypt**.
-2. Select your domain and click **Install**.
-3. Once issued (usually under 1 minute), HTTPS is active.
-
-Hostinger's reverse proxy automatically forwards HTTPS traffic to your Node.js app — no changes to `server.js` are needed.
+   You should see the wedding landing page.
 
 ---
 
-### Step 9 — Connect a custom domain (if not already)
+### Step 8 — Enable free SSL (HTTPS)
 
-1. In hPanel, go to **Domains → your domain → DNS / Nameservers**.
-2. Point your domain's nameservers to Hostinger's (shown in hPanel), or add an `A` record pointing to your hosting IP.
-3. DNS propagation can take up to 24 hours.
+1. In hPanel, go to **SSL** in the left sidebar.
+2. Find your domain and click **Install** next to **Let's Encrypt**.
+3. Wait about 1 minute for it to activate.
+
+Once SSL is installed, your site is accessible at `https://yourdomain.com`. Hostinger handles HTTPS automatically — no changes to `server.js` are needed.
 
 ---
 
-### Updating the site after changes
+### Step 9 — Point your domain to Hostinger (if needed)
 
-1. Edit files locally.
-2. Upload changed files via SFTP (overwrite existing).
-3. SSH in and run `npm install --omit=dev` if `package.json` changed.
-4. Restart the Node.js app in hPanel → **Node.js → Restart**.
+If your domain was registered elsewhere (e.g., GoDaddy, Namecheap):
+
+1. In hPanel, go to **Hosting → Overview** and copy the **nameservers** listed (e.g., `ns1.dns-parking.com`).
+2. Log in to your domain registrar and update the nameservers to Hostinger's.
+3. DNS propagation takes up to **24–48 hours**.
+
+If your domain was registered on Hostinger, it is already pointed correctly — skip this step.
+
+---
+
+### Updating the site after making changes
+
+When you edit files locally and want to push the updates:
+
+1. Open FileZilla and reconnect.
+2. Navigate to the same folder on the server.
+3. Drag and drop only the files you changed (overwrite when prompted).
+4. If you changed `package.json`, open the hPanel terminal and run `npm install --omit=dev` again.
+5. In hPanel → **Node.js**, click **Restart App**.
 
 ---
 
@@ -454,11 +502,12 @@ Hostinger's reverse proxy automatically forwards HTTPS traffic to your Node.js a
 
 | Topic | Detail |
 |---|---|
-| Persistent storage | `data/rsvps.json` persists between restarts — Hostinger shared hosting does not wipe files on restart |
-| Process management | Hostinger manages the Node.js process — you do not need PM2 on shared hosting |
-| Port | Your app should listen on `process.env.PORT` — the server already does this |
-| Logs | View Node.js logs in hPanel → **Node.js → Logs** |
-| Inactivity | Shared hosting may suspend an idle Node.js app — the first request after inactivity may be slow |
+| RSVP data | `data/rsvps.json` is stored on the server and survives restarts — it is not wiped automatically |
+| Process management | Hostinger manages the Node.js process for you — no PM2 or forever needed |
+| PORT | Hostinger sets the `PORT` environment variable automatically — `server.js` already uses `process.env.PORT` |
+| Logs | In hPanel → **Node.js → Error Logs**, you can view crash or startup errors |
+| Slow first load | Shared hosting may pause an idle Node.js app — the first visit after a period of inactivity may take a few seconds |
+| node_modules | Never upload `node_modules/` from your computer — always run `npm install` on the server via the terminal |
 
 ---
 
