@@ -14,8 +14,8 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 | **Hero — date, venue & countdown** | **Event Details — ceremony & reception** |
 | ![Wedding Program](screenshots/web/03-wedding-program.png) | ![RSVP](screenshots/web/04-rsvp.png) |
 | **Wedding Program — order of events** | **RSVP — guest submission form** |
-| ![Gift Guide](screenshots/web/05-gift-guide.png) | |
-| **Gift Guide — GCash & Landbank QR** | |
+| ![Gift Guide](screenshots/web/05-gift-guide.png) | ![RSVP Response](screenshots/web/06-rsvp-response.png) |
+| **Gift Guide — GCash & Landbank QR** | **RSVP — confirmation message** |
 
 ### Mobile (390px — iPhone)
 
@@ -24,9 +24,9 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 | ![Hero](screenshots/mobile/01-hero.png) | ![Event Details](screenshots/mobile/02-event-details.png) |
 | **Hero** | **Event Details** |
 | ![Wedding Program](screenshots/mobile/03-wedding-program.png) | ![RSVP](screenshots/mobile/04-rsvp.png) |
-| **Wedding Program** | **RSVP** |
-| ![Gift Guide](screenshots/mobile/05-gift-guide.png) | |
-| **Gift Guide** | |
+| **Wedding Program** | **RSVP — guest submission form** |
+| ![Gift Guide](screenshots/mobile/05-gift-guide.png) | ![RSVP Response](screenshots/mobile/06-rsvp-response.png) |
+| **Gift Guide** | **RSVP — confirmation message** |
 
 ---
 
