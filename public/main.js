@@ -1,5 +1,163 @@
 gsap.registerPlugin(ScrollTrigger);
 
+/* ══════════════════════════════════════════════════════════════
+   DIGITAL ENVELOPE — opening sequence
+   Runs immediately on load; locks scroll until user opens.
+══════════════════════════════════════════════════════════════ */
+(function initEnvelope() {
+  const overlay  = document.getElementById("env-overlay");
+  const envelope = document.getElementById("envelope");
+  if (!overlay || !envelope) return;
+
+  const flap     = overlay.querySelector(".env-flap");
+  const seal     = overlay.querySelector(".env-seal");
+  const card     = overlay.querySelector(".env-card");
+  const hint     = overlay.querySelector(".env-hint");
+
+  // ── Lock page scroll while overlay is active ──────────────
+  document.body.style.overflow = "hidden";
+
+  // ── Spawn floating hearts in the overlay background ───────
+  const bgHearts = document.getElementById("envBgHearts");
+  if (bgHearts) {
+    const hSizes = [5, 7, 9, 11, 13];
+    const hOpacs = [0.12, 0.17, 0.22];
+    for (let i = 0; i < 20; i++) {
+      const h = document.createElement("span");
+      h.className = "floating-heart";
+      const sz = hSizes[i % hSizes.length];
+      h.style.setProperty("--fh-size", `${sz}px`);
+      h.style.setProperty("--fh-opacity", hOpacs[Math.floor(Math.random() * hOpacs.length)]);
+      h.style.left   = `${Math.random() * 100}%`;
+      h.style.bottom = `${Math.random() * 15}%`;
+      bgHearts.appendChild(h);
+      gsap.to(h, {
+        y: -(window.innerHeight + 120),
+        x: gsap.utils.random(-35, 35),
+        duration: gsap.utils.random(12, 22),
+        repeat: -1,
+        delay: gsap.utils.random(0, 12),
+        ease: "none",
+      });
+    }
+  }
+
+  // ── Entrance animation ────────────────────────────────────
+  gsap.timeline({ delay: 0.25 })
+    .from(envelope, { y: 70, opacity: 0, duration: 1.1, ease: "power3.out" })
+    .from(hint,     { y: 16, opacity: 0, duration: 0.7, ease: "power2.out" }, "-=0.3");
+
+  // ── Idle float ────────────────────────────────────────────
+  const floatAnim = gsap.to(envelope, {
+    y: -10,
+    duration: 2.3,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+    delay: 1.5,
+  });
+
+  // ── Wax seal idle pulse ───────────────────────────────────
+  const sealPulse = gsap.to(seal, {
+    scale: 1.08,
+    duration: 1.6,
+    repeat: -1,
+    yoyo: true,
+    ease: "sine.inOut",
+    delay: 1.7,
+  });
+
+  // ── Hover: enhance shadow depth ───────────────────────────
+  envelope.addEventListener("mouseenter", () => {
+    if (opened) return;
+    gsap.to(".env-body", { boxShadow: "0 64px 120px rgba(58,35,35,0.28), 0 20px 40px rgba(58,35,35,0.14), 0 3px 8px rgba(58,35,35,0.07), inset 0 0 0 1px rgba(235,215,175,0.65)", duration: 0.5, ease: "power2.out" });
+  });
+  envelope.addEventListener("mouseleave", () => {
+    if (opened) return;
+    gsap.to(".env-body", { boxShadow: "0 48px 96px rgba(58,35,35,0.22), 0 16px 32px rgba(58,35,35,0.12), 0 3px 8px rgba(58,35,35,0.07), inset 0 0 0 1px rgba(235,215,175,0.55)", duration: 0.5, ease: "power2.out" });
+  });
+
+  // ── Opening sequence ──────────────────────────────────────
+  let opened = false;
+
+  function openEnvelope() {
+    if (opened) return;
+    opened = true;
+
+    // Kill idle animations and snap envelope to rest
+    floatAnim.kill();
+    sealPulse.kill();
+    gsap.killTweensOf(envelope);
+    gsap.killTweensOf(seal);
+    gsap.set(envelope, { y: 0 });
+
+    gsap.timeline({
+      onComplete() {
+        // Unlock page scroll
+        document.body.style.overflow = "";
+        document.body.style.overflowX = "hidden";
+        // Remove overlay from accessibility tree
+        overlay.setAttribute("aria-hidden", "true");
+        overlay.style.pointerEvents = "none";
+      },
+    })
+
+    // ① Hint fades out
+    .to(hint, { opacity: 0, y: -10, duration: 0.3, ease: "power2.in" }, 0)
+
+    // ② Seal — micro-pop then vanish
+    .to(seal, { scale: 1.2,  duration: 0.15, ease: "power2.out" }, 0.06)
+    .to(seal, { scale: 0, opacity: 0, duration: 0.38, ease: "back.in(2.8)" }, 0.21)
+
+    // ③ Flap lifts open (3D rotation around top edge)
+    .to(flap, {
+      rotateX: -180,
+      duration: 1.05,
+      ease: "power2.inOut",
+    }, 0.28)
+
+    // ④ Card peeks up from inside envelope (begins as flap passes 90°)
+    .to(card, {
+      opacity: 1,
+      y: -52,                 // slides upward, peeking out of opening
+      duration: 0.62,
+      ease: "power2.out",
+    }, 0.88)
+
+    // ⑤ Brief pause for drama — nothing at 1.5s
+
+    // ⑥ Entire envelope scales and dissolves
+    .to(envelope, {
+      scale: 1.06,
+      opacity: 0,
+      duration: 0.62,
+      ease: "power2.in",
+    }, 1.55)
+
+    // ⑦ Overlay fades to reveal landing page
+    .to(overlay, {
+      opacity: 0,
+      duration: 0.7,
+      ease: "power2.inOut",
+    }, 2.0)
+
+    // ⑧ Remove from layout
+    .set(overlay, { visibility: "hidden" });
+  }
+
+  envelope.addEventListener("click", openEnvelope);
+  envelope.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      openEnvelope();
+    }
+  });
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   END DIGITAL ENVELOPE
+══════════════════════════════════════════════════════════════ */
+
 const heroTl = gsap.timeline({ defaults: { ease: "power2.out" } });
 heroTl
   .from(".hero-content .eyebrow", { y: 28, opacity: 0, duration: 0.7 })

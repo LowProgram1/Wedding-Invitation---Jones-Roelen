@@ -12,6 +12,63 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
+    <!-- ╔══════════════════════════════════════╗ -->
+    <!-- ║      DIGITAL ENVELOPE OVERLAY        ║ -->
+    <!-- ╚══════════════════════════════════════╝ -->
+    <div id="env-overlay" role="dialog" aria-modal="true" aria-label="Wedding invitation — click to open">
+      <div class="env-bg-hearts" id="envBgHearts" aria-hidden="true"></div>
+      <div class="env-scene">
+
+        <!-- Envelope -->
+        <div id="envelope" role="button" tabindex="0" aria-label="Open invitation">
+          <div class="env-body">
+
+            <!-- Decorative fold triangles (paper crease lines) -->
+            <div class="env-tri env-tri-bottom" aria-hidden="true"></div>
+            <div class="env-tri env-tri-left"   aria-hidden="true"></div>
+            <div class="env-tri env-tri-right"  aria-hidden="true"></div>
+
+            <!-- Invitation card (hidden inside, revealed on open) -->
+            <div class="env-card" aria-hidden="true">
+              <svg class="env-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b89146" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="8" cy="14" r="5"/><circle cx="16" cy="10" r="5"/>
+              </svg>
+              <p class="env-card-names">Jones <span>&amp;</span> Roelen</p>
+              <p class="env-card-date">June 27, 2026</p>
+              <div class="env-card-rule" aria-hidden="true"></div>
+              <p class="env-card-venue">Christ the King Cathedral</p>
+            </div>
+
+            <!-- Top flap (rotates open on click) -->
+            <div class="env-flap" aria-hidden="true"></div>
+
+            <!-- Wax seal — sits at the fold junction above the flap -->
+            <div class="env-seal" aria-hidden="true">
+              <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="26" cy="26" r="25" fill="#3a2323"/>
+                <circle cx="26" cy="26" r="20.5" fill="none" stroke="rgba(184,145,70,0.55)" stroke-width="0.9" stroke-dasharray="2.8 2.2"/>
+                <circle cx="26" cy="26" r="16"   fill="none" stroke="rgba(184,145,70,0.35)" stroke-width="0.6"/>
+                <!-- Coupled rings icon -->
+                <circle cx="21" cy="28" r="5"  fill="none" stroke="#b89146" stroke-width="1.4"/>
+                <circle cx="31" cy="24" r="5"  fill="none" stroke="#b89146" stroke-width="1.4"/>
+              </svg>
+            </div>
+
+          </div>
+        </div>
+        <!-- End envelope -->
+
+        <!-- Hint text below envelope -->
+        <p class="env-hint" aria-hidden="true">
+          <span class="env-hint-star" aria-hidden="true">✦</span>
+          click to open your invitation
+          <span class="env-hint-star" aria-hidden="true">✦</span>
+        </p>
+
+      </div>
+    </div>
+    <!-- End envelope overlay -->
+
     <div class="floating-layer" id="floatingLayer" aria-hidden="true"></div>
 
     <header class="navbar" id="navbar">
