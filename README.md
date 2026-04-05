@@ -16,8 +16,8 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 | **Wedding Program — order of events** | **RSVP — guest submission form** |
 | ![Gift Guide](screenshots/web/05-gift-guide.png) | ![RSVP Response](screenshots/web/06-rsvp-response.png) |
 | **Gift Guide — GCash & Landbank QR** | **RSVP — confirmation message** |
-| ![Admin RSVP Table](screenshots/web/07-admin-rsvp-table.png) | |
-| **Admin — RSVP responses table** | |
+| ![Admin RSVP Table](screenshots/web/07-admin-rsvp-table.png) | ![Guest List](screenshots/web/08-guest-list.png) |
+| **Admin — RSVP responses table** | **Admin — generated guest list** |
 
 ### Mobile (390px — iPhone)
 
@@ -29,8 +29,8 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 | **Wedding Program** | **RSVP — guest submission form** |
 | ![Gift Guide](screenshots/mobile/05-gift-guide.png) | ![RSVP Response](screenshots/mobile/06-rsvp-response.png) |
 | **Gift Guide** | **RSVP — confirmation message** |
-| ![Admin RSVP Table](screenshots/mobile/07-admin-rsvp-table.png) | |
-| **Admin — RSVP responses table** | |
+| ![Admin RSVP Table](screenshots/mobile/07-admin-rsvp-table.png) | ![Guest List](screenshots/mobile/08-guest-list.png) |
+| **Admin — RSVP responses table** | **Admin — generated guest list** |
 
 ---
 
