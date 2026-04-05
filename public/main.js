@@ -1,156 +1,209 @@
 gsap.registerPlugin(ScrollTrigger);
 
 /* ══════════════════════════════════════════════════════════════
-   DIGITAL ENVELOPE — opening sequence
-   Runs immediately on load; locks scroll until user opens.
+   DIGITAL ENVELOPE — Creative Edition
+   Dark romantic backdrop · gold frame · shimmer · petals
 ══════════════════════════════════════════════════════════════ */
 (function initEnvelope() {
   const overlay  = document.getElementById("env-overlay");
   const envelope = document.getElementById("envelope");
   if (!overlay || !envelope) return;
 
-  const flap     = overlay.querySelector(".env-flap");
-  const seal     = overlay.querySelector(".env-seal");
-  const card     = overlay.querySelector(".env-card");
-  const hint     = overlay.querySelector(".env-hint");
+  const flap    = overlay.querySelector(".env-flap");
+  const seal    = overlay.querySelector(".env-seal");
+  const card    = overlay.querySelector(".env-card");
+  const hint    = overlay.querySelector(".env-hint");
+  const shimmer = overlay.querySelector(".env-shimmer-bar");
+  const particles = document.getElementById("envBgHearts");
 
-  // ── Lock page scroll while overlay is active ──────────────
+  // Lock scroll
   document.body.style.overflow = "hidden";
 
-  // ── Spawn floating hearts in the overlay background ───────
-  const bgHearts = document.getElementById("envBgHearts");
-  if (bgHearts) {
-    const hSizes = [5, 7, 9, 11, 13];
-    const hOpacs = [0.12, 0.17, 0.22];
-    for (let i = 0; i < 20; i++) {
+  // ── Spawn hearts + rose petals in overlay bg ──────────────
+  if (particles) {
+    // Hearts (on dark bg these look like soft pink glows)
+    const hSizes = [4, 6, 8, 10, 12];
+    for (let i = 0; i < 14; i++) {
       const h = document.createElement("span");
       h.className = "floating-heart";
       const sz = hSizes[i % hSizes.length];
       h.style.setProperty("--fh-size", `${sz}px`);
-      h.style.setProperty("--fh-opacity", hOpacs[Math.floor(Math.random() * hOpacs.length)]);
+      h.style.setProperty("--fh-opacity", (0.25 + Math.random() * 0.2).toFixed(2));
       h.style.left   = `${Math.random() * 100}%`;
-      h.style.bottom = `${Math.random() * 15}%`;
-      bgHearts.appendChild(h);
+      h.style.bottom = `${Math.random() * 20}%`;
+      particles.appendChild(h);
       gsap.to(h, {
-        y: -(window.innerHeight + 120),
-        x: gsap.utils.random(-35, 35),
-        duration: gsap.utils.random(12, 22),
+        y: -(window.innerHeight + 100),
+        x: gsap.utils.random(-40, 40),
+        duration: gsap.utils.random(10, 20),
         repeat: -1,
-        delay: gsap.utils.random(0, 12),
+        delay: gsap.utils.random(0, 10),
+        ease: "none",
+      });
+    }
+
+    // Rose petals — soft ellipse shapes falling from top
+    const petalColors = [
+      "rgba(220, 160, 160, 0.55)",
+      "rgba(240, 185, 170, 0.50)",
+      "rgba(205, 145, 145, 0.45)",
+      "rgba(255, 200, 185, 0.50)",
+    ];
+    for (let i = 0; i < 14; i++) {
+      const p = document.createElement("span");
+      p.className = "env-petal";
+      p.style.background = petalColors[i % petalColors.length];
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.top  = `-${12 + Math.random() * 20}px`;
+      p.style.width  = `${5 + Math.random() * 5}px`;
+      p.style.height = `${9 + Math.random() * 7}px`;
+      p.style.borderRadius = Math.random() > 0.5
+        ? "0 80% 0 80%"
+        : "80% 0 80% 0";
+      particles.appendChild(p);
+      gsap.to(p, {
+        y: window.innerHeight + 60,
+        x: gsap.utils.random(-80, 80),
+        rotation: gsap.utils.random(120, 360),
+        opacity: 0.7,
+        duration: gsap.utils.random(7, 15),
+        repeat: -1,
+        delay: gsap.utils.random(0, 10),
         ease: "none",
       });
     }
   }
 
-  // ── Entrance animation ────────────────────────────────────
-  gsap.timeline({ delay: 0.25 })
-    .from(envelope, { y: 70, opacity: 0, duration: 1.1, ease: "power3.out" })
-    .from(hint,     { y: 16, opacity: 0, duration: 0.7, ease: "power2.out" }, "-=0.3");
+  // ── Entrance — drops in with a gentle tilt landing ────────
+  gsap.set(envelope, { y: -80, opacity: 0, rotation: 4 });
+  gsap.set(hint, { opacity: 0, y: 14 });
+
+  gsap.timeline({ delay: 0.3 })
+    .to(envelope, {
+      y: 0, opacity: 1, rotation: -1.5,
+      duration: 1.0, ease: "power3.out",
+    })
+    .to(envelope, {
+      rotation: 0,
+      duration: 0.5, ease: "elastic.out(1, 0.5)",
+    }, "-=0.1")
+    .to(hint, {
+      opacity: 1, y: 0,
+      duration: 0.65, ease: "power2.out",
+    }, "-=0.4");
+
+  // ── Shimmer sweep (repeating gold highlight) ───────────────
+  gsap.to(shimmer, {
+    left: "150%",
+    duration: 1.5,
+    repeat: -1,
+    repeatDelay: 4.5,
+    delay: 2.0,
+    ease: "power2.inOut",
+  });
 
   // ── Idle float ────────────────────────────────────────────
   const floatAnim = gsap.to(envelope, {
-    y: -10,
-    duration: 2.3,
+    y: -12,
+    duration: 2.4,
     repeat: -1,
     yoyo: true,
     ease: "sine.inOut",
-    delay: 1.5,
+    delay: 1.8,
   });
 
-  // ── Wax seal idle pulse ───────────────────────────────────
-  const sealPulse = gsap.to(seal, {
-    scale: 1.08,
-    duration: 1.6,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-    delay: 1.7,
-  });
+  // ── Wax seal pulse ────────────────────────────────────────
+  const sealPulse = gsap.timeline({ repeat: -1, delay: 2.0 })
+    .to(seal, { scale: 1.1,  duration: 1.4, ease: "sine.inOut" })
+    .to(seal, { scale: 1.0,  duration: 1.4, ease: "sine.inOut" })
+    .to(seal, { rotation: 3, duration: 2.0, ease: "sine.inOut" })
+    .to(seal, { rotation: 0, duration: 2.0, ease: "sine.inOut" });
 
-  // ── Hover: enhance shadow depth ───────────────────────────
+  // ── Hover: lift envelope on dark background ────────────────
+  let opened = false;
+
   envelope.addEventListener("mouseenter", () => {
     if (opened) return;
-    gsap.to(".env-body", { boxShadow: "0 64px 120px rgba(58,35,35,0.28), 0 20px 40px rgba(58,35,35,0.14), 0 3px 8px rgba(58,35,35,0.07), inset 0 0 0 1px rgba(235,215,175,0.65)", duration: 0.5, ease: "power2.out" });
+    gsap.to(envelope, { y: "-=6", duration: 0.4, ease: "power2.out", overwrite: "auto" });
+    gsap.to(hint, { opacity: 1, letterSpacing: "0.12em", duration: 0.4, ease: "power2.out" });
   });
   envelope.addEventListener("mouseleave", () => {
     if (opened) return;
-    gsap.to(".env-body", { boxShadow: "0 48px 96px rgba(58,35,35,0.22), 0 16px 32px rgba(58,35,35,0.12), 0 3px 8px rgba(58,35,35,0.07), inset 0 0 0 1px rgba(235,215,175,0.55)", duration: 0.5, ease: "power2.out" });
+    gsap.to(envelope, { y: "+=6", duration: 0.4, ease: "power2.inOut", overwrite: "auto" });
+    gsap.to(hint, { letterSpacing: "0.08em", duration: 0.4, ease: "power2.inOut" });
   });
 
   // ── Opening sequence ──────────────────────────────────────
-  let opened = false;
-
   function openEnvelope() {
     if (opened) return;
     opened = true;
 
-    // Kill idle animations and snap envelope to rest
     floatAnim.kill();
     sealPulse.kill();
-    gsap.killTweensOf(envelope);
-    gsap.killTweensOf(seal);
-    gsap.set(envelope, { y: 0 });
+    gsap.killTweensOf([envelope, seal, shimmer]);
+    gsap.set(envelope, { y: 0, rotation: 0 });
 
     gsap.timeline({
       onComplete() {
-        // Unlock page scroll
-        document.body.style.overflow = "";
-        document.body.style.overflowX = "hidden";
-        // Remove overlay from accessibility tree
+        document.body.style.overflow   = "";
+        document.body.style.overflowX  = "hidden";
         overlay.setAttribute("aria-hidden", "true");
-        overlay.style.pointerEvents = "none";
+        overlay.style.pointerEvents    = "none";
       },
     })
 
-    // ① Hint fades out
-    .to(hint, { opacity: 0, y: -10, duration: 0.3, ease: "power2.in" }, 0)
+    // ① Hint and glow fade
+    .to(hint,             { opacity: 0, y: -12, duration: 0.3, ease: "power2.in" }, 0)
+    .to(".env-glow",      { opacity: 0, duration: 0.4 }, 0)
 
-    // ② Seal — micro-pop then vanish
-    .to(seal, { scale: 1.2,  duration: 0.15, ease: "power2.out" }, 0.06)
-    .to(seal, { scale: 0, opacity: 0, duration: 0.38, ease: "back.in(2.8)" }, 0.21)
+    // ② Seal reacts — pop then crumble away
+    .to(seal, { scale: 1.25, duration: 0.14, ease: "power2.out" }, 0.05)
+    .to(seal, { scale: 0, opacity: 0, rotation: 20, duration: 0.42, ease: "back.in(3)" }, 0.19)
 
-    // ③ Flap lifts open (3D rotation around top edge)
+    // ③ Envelope rights itself with a tiny shake before opening
+    .to(envelope, { x: -5, duration: 0.06, ease: "power2.out" }, 0.35)
+    .to(envelope, { x: 5,  duration: 0.06, ease: "power2.out" }, 0.41)
+    .to(envelope, { x: 0,  duration: 0.06, ease: "power2.out" }, 0.47)
+
+    // ④ Flap lifts open (3D)
     .to(flap, {
-      rotateX: -180,
-      duration: 1.05,
+      rotateX: -185,
+      duration: 1.1,
       ease: "power2.inOut",
-    }, 0.28)
+    }, 0.52)
 
-    // ④ Card peeks up from inside envelope (begins as flap passes 90°)
+    // ⑤ Card rises from the opened envelope
     .to(card, {
       opacity: 1,
-      y: -52,                 // slides upward, peeking out of opening
-      duration: 0.62,
+      y: -58,
+      duration: 0.65,
       ease: "power2.out",
-    }, 0.88)
+    }, 1.0)
 
-    // ⑤ Brief pause for drama — nothing at 1.5s
+    // ⑥ Overlay dims further to black before reveal
+    .to(overlay, { background: "#0a0402", duration: 0.5, ease: "power2.in" }, 1.6)
 
-    // ⑥ Entire envelope scales and dissolves
+    // ⑦ Envelope dissolves
     .to(envelope, {
-      scale: 1.06,
+      scale: 1.08,
       opacity: 0,
-      duration: 0.62,
+      duration: 0.65,
       ease: "power2.in",
-    }, 1.55)
+    }, 1.7)
 
-    // ⑦ Overlay fades to reveal landing page
+    // ⑧ Full reveal — overlay fades out
     .to(overlay, {
       opacity: 0,
-      duration: 0.7,
+      duration: 0.75,
       ease: "power2.inOut",
-    }, 2.0)
+    }, 2.15)
 
-    // ⑧ Remove from layout
     .set(overlay, { visibility: "hidden" });
   }
 
   envelope.addEventListener("click", openEnvelope);
   envelope.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      openEnvelope();
-    }
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openEnvelope(); }
   });
 })();
 

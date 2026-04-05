@@ -8,38 +8,33 @@
 }
 
 /* ══════════════════════════════════════════════════════════════
-   DIGITAL ENVELOPE OVERLAY
-   Color palette inherits from :root above.
-   Additional envelope-specific tokens:
-   --env-paper       warm ivory body
-   --env-flap        slightly cooler ivory for flap depth
-   --env-fold-dark   shadowed fold triangle
-   --env-fold-mid    lighter fold triangle
+   DIGITAL ENVELOPE OVERLAY — Creative Edition
 ══════════════════════════════════════════════════════════════ */
 :root {
   --env-paper:     #fef8ed;
   --env-flap:      #fdefd0;
-  --env-fold-dark: #e6d3b0;
-  --env-fold-mid:  #f3e6cc;
-  --env-seal-bg:   #3a2323;
+  --env-fold-dark: #ddc99a;
+  --env-fold-mid:  #efe0c0;
+  --env-gold:      #b89146;
+  --env-gold-dim:  rgba(184, 145, 70, 0.55);
 }
 
-/* ── Overlay ──────────────────────────────────────────────── */
+/* ── Overlay — dark romantic backdrop ───────────────────────── */
 #env-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(255, 245, 228, 0.55) 0%, transparent 70%),
-    var(--bg);
+    radial-gradient(ellipse 55% 50% at 50% 46%, rgba(110, 55, 8, 0.28) 0%, transparent 70%),
+    #160a04;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
 
-/* Floating hearts layer inside overlay */
-.env-bg-hearts {
+/* Floating particles layer */
+.env-bg-particles {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -47,50 +42,95 @@
   z-index: 0;
 }
 
-/* ── Scene (envelope + hint stacked) ─────────────────────── */
+/* Petals spawned by JS */
+.env-petal {
+  position: absolute;
+  width: 7px;
+  height: 12px;
+  border-radius: 0 80% 0 80%;
+  opacity: 0;
+}
+
+/* ── Scene ───────────────────────────────────────────────────── */
 .env-scene {
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2.2rem;
+  gap: 2.4rem;
 }
 
-/* ── Envelope shell ───────────────────────────────────────── */
+/* Ambient glow behind envelope */
+.env-glow {
+  position: absolute;
+  width: clamp(340px, 95vw, 540px);
+  aspect-ratio: 8 / 5;
+  border-radius: 8px;
+  background: radial-gradient(ellipse at center, rgba(184, 130, 40, 0.18) 0%, transparent 70%);
+  filter: blur(30px);
+  pointer-events: none;
+  z-index: 0;
+  animation: envGlowPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes envGlowPulse {
+  from { opacity: 0.6; transform: scale(0.96); }
+  to   { opacity: 1;   transform: scale(1.04); }
+}
+
+/* ── Envelope shell ───────────────────────────────────────────── */
 #envelope {
   position: relative;
-  width: clamp(300px, 82vw, 440px);
+  z-index: 1;
+  width: clamp(300px, 82vw, 450px);
   aspect-ratio: 8 / 5;
   cursor: pointer;
   outline: none;
   user-select: none;
   -webkit-user-select: none;
-  /* Perspective context for the 3D flap rotation */
   perspective: 1400px;
 }
 
 #envelope:focus-visible {
-  outline: 2px solid var(--gold);
-  outline-offset: 12px;
+  outline: 2px solid var(--env-gold);
+  outline-offset: 14px;
   border-radius: 3px;
 }
 
-/* ── Envelope body (the rectangle) ───────────────────────── */
+/* ── Envelope body ────────────────────────────────────────────── */
 .env-body {
   position: absolute;
   inset: 0;
   background: var(--env-paper);
   border-radius: 2px;
   box-shadow:
-    0 48px 96px  rgba(58, 35, 35, 0.22),
-    0 16px 32px  rgba(58, 35, 35, 0.12),
-    0  3px  8px  rgba(58, 35, 35, 0.07),
-    inset 0 0 0 1px rgba(235, 215, 175, 0.55);
+    0 0 0 1px rgba(220, 195, 140, 0.5),
+    0 60px 100px rgba(0, 0, 0, 0.55),
+    0 20px 40px  rgba(0, 0, 0, 0.35),
+    0  6px 12px  rgba(0, 0, 0, 0.20);
   overflow: visible;
 }
 
-/* Subtle horizontal crease at the fold junction (52% from top) */
+/* Paper texture overlay */
+.env-body::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 3px,
+      rgba(200, 175, 120, 0.04) 3px,
+      rgba(200, 175, 120, 0.04) 4px
+    );
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Crease line at fold junction */
 .env-body::before {
   content: "";
   position: absolute;
@@ -100,54 +140,249 @@
   background: linear-gradient(
     to right,
     transparent 0%,
-    rgba(195, 168, 118, 0.45) 12%,
-    rgba(195, 168, 118, 0.55) 50%,
-    rgba(195, 168, 118, 0.45) 88%,
+    rgba(180, 150, 90, 0.5) 10%,
+    rgba(180, 150, 90, 0.65) 50%,
+    rgba(180, 150, 90, 0.5) 90%,
     transparent 100%
   );
   z-index: 6;
   pointer-events: none;
 }
 
-/* ── Fold triangles ───────────────────────────────────────── */
+/* ── Fold triangles ───────────────────────────────────────────── */
 .env-tri {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-/* Bottom V-triangle (lower half of envelope face) */
 .env-tri-bottom {
   clip-path: polygon(0% 100%, 100% 100%, 50% 52%);
-  background: var(--env-fold-mid);
+  background: linear-gradient(to top, var(--env-fold-mid), rgba(254, 248, 237, 0.6));
   z-index: 1;
 }
 
-/* Left triangle */
 .env-tri-left {
   clip-path: polygon(0% 0%, 0% 100%, 50% 52%);
-  background: linear-gradient(to right, var(--env-fold-dark), var(--env-fold-mid));
+  background: linear-gradient(to right, var(--env-fold-dark), rgba(254, 248, 237, 0.5));
   z-index: 2;
 }
 
-/* Right triangle */
 .env-tri-right {
   clip-path: polygon(100% 0%, 100% 100%, 50% 52%);
-  background: linear-gradient(to left, var(--env-fold-dark), var(--env-fold-mid));
+  background: linear-gradient(to left, var(--env-fold-dark), rgba(254, 248, 237, 0.5));
   z-index: 2;
 }
 
-/* ── Invitation card (inside envelope body) ───────────────── */
-.env-card {
+/* ── Gold inner frame ─────────────────────────────────────────── */
+.env-frame {
   position: absolute;
-  top: 66%;
+  inset: 10px;
+  border: 1px solid rgba(184, 145, 70, 0.28);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* Corner ornaments */
+.env-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+}
+
+.env-corner svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.env-corner-tl { top: -1px;  left: -1px;  }
+.env-corner-tr { top: -1px;  right: -1px; }
+.env-corner-bl { bottom: -1px; left: -1px;  }
+.env-corner-br { bottom: -1px; right: -1px; }
+
+/* ── Return address (top-left) ────────────────────────────────── */
+.env-return {
+  position: absolute;
+  top: 16px;
+  left: 18px;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.env-return-name {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: clamp(5.5px, 1.4vw, 7px);
+  color: rgba(140, 105, 40, 0.7);
+  margin: 0 0 3px;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.env-return-bar {
+  width: 38px;
+  height: 0.6px;
+  background: rgba(184, 145, 70, 0.32);
+}
+
+/* ── Postage stamp (top-right) ────────────────────────────────── */
+.env-stamp {
+  position: absolute;
+  top: 11px;
+  right: 13px;
+  width: 32px;
+  height: 40px;
+  z-index: 6;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+}
+
+.env-stamp svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── Decorative address lines (lower body) ────────────────────── */
+.env-address {
+  position: absolute;
+  bottom: 22%;
   left: 50%;
   transform: translateX(-50%);
-  width: 60%;
-  padding: 0.85rem 1rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.env-addr-to {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: clamp(5px, 1.3vw, 6.5px);
+  color: rgba(140, 105, 40, 0.5);
+  margin: 0 0 1px;
+  letter-spacing: 0.1em;
+}
+
+.env-addr-line {
+  height: 0.7px;
+  background: linear-gradient(to right, transparent, rgba(184,145,70,0.25), transparent);
+  border-radius: 1px;
+}
+
+.env-addr-long  { width: clamp(70px, 18vw, 100px); }
+.env-addr-mid   { width: clamp(55px, 14vw, 78px);  }
+.env-addr-short { width: clamp(38px,  9vw, 55px);  }
+
+/* ── Shimmer sweep ────────────────────────────────────────────── */
+.env-shimmer-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 7;
+  pointer-events: none;
+  border-radius: 2px;
+}
+
+.env-shimmer-bar {
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 30%,
+    rgba(255, 252, 230, 0.20) 50%,
+    rgba(255, 255, 255, 0.06) 70%,
+    transparent 100%
+  );
+  transform: skewX(-12deg);
+}
+
+/* ── Top flap ─────────────────────────────────────────────────── */
+.env-flap {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0% 0%, 100% 0%, 50% 52%);
+  background: linear-gradient(172deg,
+    #fefaf0 0%,
+    var(--env-flap) 75%,
+    #f0ddb0 100%
+  );
+  transform-origin: top center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  z-index: 8;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Sheen on flap */
+.env-flap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0% 0%, 100% 0%, 50% 52%);
+  background: linear-gradient(
+    130deg,
+    rgba(255, 255, 255, 0.22) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+/* Gold decorative edge on top of flap */
+.env-flap::after {
+  content: "";
+  position: absolute;
+  left: 11px; right: 11px;
+  top: 11px;
+  height: 0.8px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(184,145,70,0.35) 15%,
+    rgba(184,145,70,0.45) 50%,
+    rgba(184,145,70,0.35) 85%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Wax seal ─────────────────────────────────────────────────── */
+.env-seal {
+  position: absolute;
+  top:  calc(52% - 30px);
+  left: calc(50% - 30px);
+  width:  60px;
+  height: 60px;
+  z-index: 12;
+  filter:
+    drop-shadow(0 6px 16px rgba(0, 0, 0, 0.55))
+    drop-shadow(0 2px  5px rgba(0, 0, 0, 0.35));
+}
+
+.env-seal svg { width: 100%; height: 100%; display: block; }
+
+/* ── Invitation card ──────────────────────────────────────────── */
+/* Positioned relative to #envelope (outside env-body) */
+.env-card {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 62%;
+  padding: 0.9rem 1.1rem 1rem;
   background: #fff;
-  border: 1px solid rgba(184, 145, 70, 0.22);
-  box-shadow: 0 6px 24px rgba(58, 35, 35, 0.10);
+  border: 1px solid rgba(184, 145, 70, 0.25);
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.18),
+    0 2px  8px rgba(0, 0, 0, 0.10);
   text-align: center;
   z-index: 4;
   opacity: 0;
@@ -158,135 +393,80 @@
   width: 22px;
   height: 22px;
   display: block;
-  margin: 0 auto 0.45rem;
+  margin: 0 auto 0.5rem;
 }
 
 .env-card-names {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(0.85rem, 2.8vw, 1.05rem);
+  font-size: clamp(0.88rem, 2.8vw, 1.08rem);
   font-weight: 600;
   color: var(--gold);
-  margin: 0 0 0.18rem;
+  margin: 0 0 0.2rem;
   letter-spacing: 0.03em;
   line-height: 1.2;
 }
 
-.env-card-names span {
-  color: var(--gold);
-  font-style: italic;
-}
+.env-card-names span { font-style: italic; }
 
 .env-card-date {
   font-family: "Inter", sans-serif;
-  font-size: clamp(0.58rem, 1.8vw, 0.68rem);
+  font-size: clamp(0.56rem, 1.7vw, 0.67rem);
   font-weight: 400;
   color: var(--text);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  opacity: 0.6;
-  margin: 0 0 0.55rem;
+  opacity: 0.58;
+  margin: 0 0 0.6rem;
 }
 
 .env-card-rule {
-  width: 40%;
+  width: 38%;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(184,145,70,0.4), transparent);
-  margin: 0 auto 0.45rem;
+  background: linear-gradient(to right, transparent, rgba(184,145,70,0.38), transparent);
+  margin: 0 auto 0.5rem;
 }
 
 .env-card-venue {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(0.62rem, 2vw, 0.75rem);
+  font-size: clamp(0.6rem, 1.8vw, 0.72rem);
   font-style: italic;
   color: var(--text);
-  opacity: 0.55;
+  opacity: 0.52;
   margin: 0;
   letter-spacing: 0.02em;
 }
 
-/* ── Top flap (3D pivot element) ──────────────────────────── */
-.env-flap {
-  position: absolute;
-  inset: 0;
-  /* Triangle covering top 52% */
-  clip-path: polygon(0% 0%, 100% 0%, 50% 52%);
-  background: linear-gradient(168deg, var(--env-paper) 0%, var(--env-flap) 80%);
-  /* 3D rotation pivot at the top edge */
-  transform-origin: top center;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  z-index: 8;
-  /* Subtle inner highlight along top edge */
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-/* Sheen on the flap face */
-.env-flap::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  clip-path: polygon(0% 0%, 100% 0%, 50% 52%);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.18) 0%,
-    transparent 55%
-  );
-  pointer-events: none;
-}
-
-/* ── Wax seal ──────────────────────────────────────────────── */
-.env-seal {
-  position: absolute;
-  /* Center precisely at the fold junction (50% W, 52% H) */
-  top:  calc(52% - 26px);
-  left: calc(50% - 26px);
-  width:  52px;
-  height: 52px;
-  z-index: 12;
-  filter:
-    drop-shadow(0 4px 10px rgba(58, 35, 35, 0.38))
-    drop-shadow(0 1px  3px rgba(58, 35, 35, 0.20));
-}
-
-.env-seal svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* ── Hint text ─────────────────────────────────────────────── */
+/* ── Hint text ────────────────────────────────────────────────── */
 .env-hint {
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
-  font-size: clamp(0.88rem, 2.8vw, 1rem);
-  color: var(--gold);
-  letter-spacing: 0.07em;
+  font-size: clamp(0.82rem, 2.6vw, 0.96rem);
+  color: rgba(210, 170, 80, 0.85);
+  letter-spacing: 0.08em;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  opacity: 0.88;
+  gap: 0.8rem;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.4);
 }
 
 .env-hint-star {
   font-style: normal;
-  font-size: 0.55em;
-  opacity: 0.65;
+  font-size: 0.52em;
+  opacity: 0.6;
 }
 
-/* ── Responsive adjustments ────────────────────────────────── */
+/* ── Responsive ───────────────────────────────────────────────── */
 @media (max-width: 420px) {
   .env-seal {
-    width:  44px;
-    height: 44px;
-    top:  calc(52% - 22px);
-    left: calc(50% - 22px);
+    width:  50px;
+    height: 50px;
+    top:  calc(52% - 25px);
+    left: calc(50% - 25px);
   }
-
-  .env-card {
-    width: 70%;
-    padding: 0.7rem 0.85rem 0.75rem;
-  }
+  .env-card  { width: 72%; padding: 0.7rem 0.9rem 0.8rem; }
+  .env-frame { inset: 7px; }
+  .env-stamp { width: 27px; height: 34px; top: 9px; right: 10px; }
 }
 
 /* ══════════════════════════════════════════════════════════════

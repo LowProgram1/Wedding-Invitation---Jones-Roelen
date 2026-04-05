@@ -16,53 +16,164 @@
     <!-- ║      DIGITAL ENVELOPE OVERLAY        ║ -->
     <!-- ╚══════════════════════════════════════╝ -->
     <div id="env-overlay" role="dialog" aria-modal="true" aria-label="Wedding invitation — click to open">
-      <div class="env-bg-hearts" id="envBgHearts" aria-hidden="true"></div>
+      <div class="env-bg-particles" id="envBgHearts" aria-hidden="true"></div>
+
       <div class="env-scene">
+
+        <!-- Outer glow ring around envelope -->
+        <div class="env-glow" aria-hidden="true"></div>
 
         <!-- Envelope -->
         <div id="envelope" role="button" tabindex="0" aria-label="Open invitation">
           <div class="env-body">
 
-            <!-- Decorative fold triangles (paper crease lines) -->
+            <!-- ① Fold triangles -->
             <div class="env-tri env-tri-bottom" aria-hidden="true"></div>
             <div class="env-tri env-tri-left"   aria-hidden="true"></div>
             <div class="env-tri env-tri-right"  aria-hidden="true"></div>
 
-            <!-- Invitation card (hidden inside, revealed on open) -->
-            <div class="env-card" aria-hidden="true">
-              <svg class="env-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#b89146" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="8" cy="14" r="5"/><circle cx="16" cy="10" r="5"/>
-              </svg>
-              <p class="env-card-names">Jones <span>&amp;</span> Roelen</p>
-              <p class="env-card-date">June 27, 2026</p>
-              <div class="env-card-rule" aria-hidden="true"></div>
-              <p class="env-card-venue">Christ the King Cathedral</p>
+            <!-- ② Gold inner frame with corner ornaments -->
+            <div class="env-frame" aria-hidden="true">
+              <div class="env-corner env-corner-tl" aria-hidden="true">
+                <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 18 3 L 3 3 L 3 18" stroke="#b89146" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+                  <circle cx="3" cy="3" r="2" fill="#b89146" opacity="0.55"/>
+                  <circle cx="3" cy="3" r="0.8" fill="#fef8ed" opacity="0.8"/>
+                </svg>
+              </div>
+              <div class="env-corner env-corner-tr" aria-hidden="true">
+                <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 4 3 L 19 3 L 19 18" stroke="#b89146" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+                  <circle cx="19" cy="3" r="2" fill="#b89146" opacity="0.55"/>
+                  <circle cx="19" cy="3" r="0.8" fill="#fef8ed" opacity="0.8"/>
+                </svg>
+              </div>
+              <div class="env-corner env-corner-bl" aria-hidden="true">
+                <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 18 19 L 3 19 L 3 4" stroke="#b89146" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+                  <circle cx="3" cy="19" r="2" fill="#b89146" opacity="0.55"/>
+                  <circle cx="3" cy="19" r="0.8" fill="#fef8ed" opacity="0.8"/>
+                </svg>
+              </div>
+              <div class="env-corner env-corner-br" aria-hidden="true">
+                <svg viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 4 19 L 19 19 L 19 4" stroke="#b89146" stroke-width="1" stroke-linecap="round" opacity="0.7"/>
+                  <circle cx="19" cy="19" r="2" fill="#b89146" opacity="0.55"/>
+                  <circle cx="19" cy="19" r="0.8" fill="#fef8ed" opacity="0.8"/>
+                </svg>
+              </div>
             </div>
 
-            <!-- Top flap (rotates open on click) -->
+            <!-- ③ Return address (top-left) -->
+            <div class="env-return" aria-hidden="true">
+              <p class="env-return-name">Jones &amp; Roelen</p>
+              <div class="env-return-bar"></div>
+            </div>
+
+            <!-- ④ Postage stamp (top-right) -->
+            <div class="env-stamp" aria-hidden="true">
+              <svg viewBox="0 0 32 40" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <clipPath id="stampClip">
+                    <rect x="3" y="3" width="26" height="34" rx="1.5"/>
+                  </clipPath>
+                </defs>
+                <!-- Stamp body -->
+                <rect x="3" y="3" width="26" height="34" rx="1.5"
+                      fill="rgba(254,248,237,0.92)" stroke="rgba(184,145,70,0.5)" stroke-width="0.8"/>
+                <!-- Perforated edge dots (top/bottom) -->
+                <g fill="rgba(184,145,70,0.35)">
+                  <circle cx="7"  cy="3" r="1.2"/><circle cx="11" cy="3" r="1.2"/>
+                  <circle cx="15" cy="3" r="1.2"/><circle cx="19" cy="3" r="1.2"/>
+                  <circle cx="23" cy="3" r="1.2"/><circle cx="27" cy="3" r="1.2"/>
+                  <circle cx="7"  cy="37" r="1.2"/><circle cx="11" cy="37" r="1.2"/>
+                  <circle cx="15" cy="37" r="1.2"/><circle cx="19" cy="37" r="1.2"/>
+                  <circle cx="23" cy="37" r="1.2"/><circle cx="27" cy="37" r="1.2"/>
+                </g>
+                <!-- Coupled rings motif -->
+                <circle cx="13" cy="18" r="5" fill="none" stroke="#b89146" stroke-width="1" opacity="0.7"/>
+                <circle cx="19" cy="15" r="5" fill="none" stroke="#b89146" stroke-width="1" opacity="0.7"/>
+                <!-- RSVP label -->
+                <text x="16" y="33" text-anchor="middle"
+                      font-family="Inter, sans-serif" font-size="4.5"
+                      fill="rgba(184,145,70,0.65)" letter-spacing="0.8" font-weight="500">RSVP</text>
+              </svg>
+            </div>
+
+            <!-- ⑤ Decorative address lines (body center) -->
+            <div class="env-address" aria-hidden="true">
+              <p class="env-addr-to">To</p>
+              <div class="env-addr-line env-addr-long"></div>
+              <div class="env-addr-line env-addr-mid"></div>
+              <div class="env-addr-line env-addr-short"></div>
+            </div>
+
+            <!-- ⑥ Shimmer sweep (clipped by its own wrapper) -->
+            <div class="env-shimmer-wrap" aria-hidden="true">
+              <div class="env-shimmer-bar"></div>
+            </div>
+
+            <!-- ⑦ Top flap (3D rotates on click) -->
             <div class="env-flap" aria-hidden="true"></div>
 
-            <!-- Wax seal — sits at the fold junction above the flap -->
+            <!-- ⑧ Wax seal — centered at fold junction -->
             <div class="env-seal" aria-hidden="true">
-              <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <circle cx="26" cy="26" r="25" fill="#3a2323"/>
-                <circle cx="26" cy="26" r="20.5" fill="none" stroke="rgba(184,145,70,0.55)" stroke-width="0.9" stroke-dasharray="2.8 2.2"/>
-                <circle cx="26" cy="26" r="16"   fill="none" stroke="rgba(184,145,70,0.35)" stroke-width="0.6"/>
-                <!-- Coupled rings icon -->
-                <circle cx="21" cy="28" r="5"  fill="none" stroke="#b89146" stroke-width="1.4"/>
-                <circle cx="31" cy="24" r="5"  fill="none" stroke="#b89146" stroke-width="1.4"/>
+              <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="waxGrad" cx="38%" cy="30%" r="68%">
+                    <stop offset="0%"   stop-color="#6b2828"/>
+                    <stop offset="55%"  stop-color="#3a1010"/>
+                    <stop offset="100%" stop-color="#1a0505"/>
+                  </radialGradient>
+                </defs>
+                <!-- Wax disc -->
+                <circle cx="30" cy="30" r="29" fill="url(#waxGrad)"/>
+                <!-- Highlight (simulates curved wax surface) -->
+                <ellipse cx="20" cy="16" rx="9" ry="6" fill="rgba(255,255,255,0.09)" transform="rotate(-25 20 16)"/>
+                <!-- Outer decorative dashed ring -->
+                <circle cx="30" cy="30" r="25.5" fill="none"
+                        stroke="rgba(184,145,70,0.7)" stroke-width="1.1" stroke-dasharray="4 2.8"/>
+                <!-- Middle ring -->
+                <circle cx="30" cy="30" r="19.5" fill="none"
+                        stroke="rgba(184,145,70,0.4)" stroke-width="0.8"/>
+                <!-- Cardinal accent dots (N/E/S/W) -->
+                <circle cx="30"   cy="4.5"  r="1.8" fill="rgba(184,145,70,0.65)"/>
+                <circle cx="55.5" cy="30"   r="1.8" fill="rgba(184,145,70,0.65)"/>
+                <circle cx="30"   cy="55.5" r="1.8" fill="rgba(184,145,70,0.65)"/>
+                <circle cx="4.5"  cy="30"   r="1.8" fill="rgba(184,145,70,0.65)"/>
+                <!-- Diagonal accent dots -->
+                <circle cx="9"  cy="9"  r="1.1" fill="rgba(184,145,70,0.35)"/>
+                <circle cx="51" cy="9"  r="1.1" fill="rgba(184,145,70,0.35)"/>
+                <circle cx="9"  cy="51" r="1.1" fill="rgba(184,145,70,0.35)"/>
+                <circle cx="51" cy="51" r="1.1" fill="rgba(184,145,70,0.35)"/>
+                <!-- Coupled rings motif -->
+                <circle cx="24" cy="32" r="7.5" fill="none" stroke="#d4a84b" stroke-width="1.8"/>
+                <circle cx="36" cy="27" r="7.5" fill="none" stroke="#d4a84b" stroke-width="1.8"/>
               </svg>
             </div>
 
           </div>
+
+          <!-- ⑨ Invitation card — outside env-body so it can slide freely -->
+          <div class="env-card" aria-hidden="true">
+            <svg class="env-card-icon" viewBox="0 0 24 24" fill="none" stroke="#b89146"
+                 stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <circle cx="8" cy="14" r="5"/><circle cx="16" cy="10" r="5"/>
+            </svg>
+            <p class="env-card-names">Jones <span>&amp;</span> Roelen</p>
+            <p class="env-card-date">June 27, 2026</p>
+            <div class="env-card-rule" aria-hidden="true"></div>
+            <p class="env-card-venue">Christ the King Cathedral</p>
+          </div>
+
         </div>
         <!-- End envelope -->
 
-        <!-- Hint text below envelope -->
+        <!-- Hint text -->
         <p class="env-hint" aria-hidden="true">
-          <span class="env-hint-star" aria-hidden="true">✦</span>
-          click to open your invitation
-          <span class="env-hint-star" aria-hidden="true">✦</span>
+          <span class="env-hint-star">✦</span>
+          a message awaits — click to open
+          <span class="env-hint-star">✦</span>
         </p>
 
       </div>
