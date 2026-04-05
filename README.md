@@ -10,6 +10,8 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 
 | | |
 |---|---|
+| ![Envelope Splash](screenshots/web/00-envelope.png) | |
+| **Digital Envelope — animated entry screen** | |
 | ![Hero](screenshots/web/01-hero.png) | ![Event Details](screenshots/web/02-event-details.png) |
 | **Hero — date, venue & countdown** | **Event Details — ceremony & reception** |
 | ![Wedding Program](screenshots/web/03-wedding-program.png) | ![RSVP](screenshots/web/04-rsvp.png) |
@@ -23,6 +25,8 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 
 | | |
 |---|---|
+| ![Envelope Splash](screenshots/mobile/00-envelope.png) | |
+| **Digital Envelope — animated entry screen** | |
 | ![Hero](screenshots/mobile/01-hero.png) | ![Event Details](screenshots/mobile/02-event-details.png) |
 | **Hero** | **Event Details** |
 | ![Wedding Program](screenshots/mobile/03-wedding-program.png) | ![RSVP](screenshots/mobile/04-rsvp.png) |
