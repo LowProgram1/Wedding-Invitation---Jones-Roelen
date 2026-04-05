@@ -19,7 +19,7 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 | ![Admin RSVP Table](screenshots/web/07-admin-rsvp-table.png) | ![Guest List](screenshots/web/08-guest-list.png) |
 | **Admin — RSVP responses table** | **Admin — generated guest list** |
 
-### Mobile (390px — iPhone)
+### Mobile (390px)
 
 | | |
 |---|---|
