@@ -8,3 +8,4 @@ data/rsvps.json
 .claude/
 .nvmrc
 .version
+take-screenshots.mjs

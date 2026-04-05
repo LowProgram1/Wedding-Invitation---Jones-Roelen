@@ -4,6 +4,19 @@ A wedding invitation website for **Jones & Roelen**, celebrating their union on 
 
 ---
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Hero](screenshots/01-hero.png) | ![Event Details](screenshots/02-event-details.png) |
+| **Hero — date, venue & countdown** | **Event Details — ceremony & reception** |
+| ![Wedding Program](screenshots/03-wedding-program.png) | ![RSVP](screenshots/04-rsvp.png) |
+| **Wedding Program — order of events** | **RSVP — guest submission form** |
+| ![Gift Guide](screenshots/05-gift-guide.png) | |
+| **Gift Guide — GCash & Landbank QR** | |
+
+---
+
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
