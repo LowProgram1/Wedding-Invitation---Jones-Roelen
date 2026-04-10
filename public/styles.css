@@ -1,3 +1,21 @@
+/* "The Seasons" — place TheSeasons.woff2 in /public/fonts/ to activate */
+@font-face {
+  font-family: "The Seasons";
+  src: url("/fonts/TheSeasons-Regular.woff2") format("woff2"),
+       url("/fonts/TheSeasons-Regular.woff")  format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "The Seasons";
+  src: url("/fonts/TheSeasons-Italic.woff2") format("woff2"),
+       url("/fonts/TheSeasons-Italic.woff")  format("woff");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --bg: #fffaf7;
   --blush: #f8e7e6;
@@ -549,8 +567,8 @@ body {
 }
 
 .brand {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 1.5rem;
+  font-family: "Great Vibes", cursive;
+  font-size: 1.45rem;
   color: var(--gold);
   text-decoration: none;
   display: flex;
@@ -573,7 +591,7 @@ body {
 .navbar nav a {
   text-decoration: none;
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   position: relative;
   padding-bottom: 0.2rem;
   transition: color 0.25s ease;
@@ -684,7 +702,7 @@ body {
 .mobile-menu-nav a {
   text-decoration: none;
   color: var(--text);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-family: "Cormorant Garamond", serif;
   padding: 0.75rem 0;
   border-bottom: 1px solid rgba(184, 145, 70, 0.15);
@@ -717,128 +735,129 @@ body {
 
 .section-title {
   text-align: center;
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  color: #3b1a28;
   margin: 0 0 2rem;
+  line-height: 1.1;
 }
 
-.hero {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-}
+/* ══════════════════════════════════════════════════════════════
+   HERO — Tailwind handles layout & typography.
+   This block keeps only what Tailwind can't: GSAP-target stubs,
+   petal animation shapes, and the CTA hover state.
+══════════════════════════════════════════════════════════════ */
 
-.hero-bg {
+/* .hlayer-bg is a GSAP parallax target — styling is Tailwind inline */
+
+
+/* ─── Hero Layered Asset Images ─── */
+.hero-church {
   position: absolute;
-  inset: 0;
-  background-image: url("/uploads/hero-Bg/hero-bg.png");
-  background-size: cover;
-  background-position: center;
-  transform: scale(1.08);
+  top: 0; left: 0; width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 1;
+  mix-blend-mode: normal;
+  z-index: 1;
+  pointer-events: none;
 }
 
-.hero-overlay {
+.hero-couple {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(rgba(20, 10, 10, 0.25), rgba(20, 10, 10, 0.45));
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 90vh;
+  width: auto;
+  z-index: 2;
+  pointer-events: none;
 }
 
-.hero-content {
-  text-align: center;
-  color: #fff;
-  position: relative;
-  padding: 1rem;
+/* ══ Tablets (≤ 1024px) ══ */
+@media (max-width: 1024px) {
+  .hero-couple {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    object-position: 62% bottom;
+  }
+
+  .hero-face-spacer { height: 38vh !important; }
+  .hero-intro         { margin-bottom: 0.2rem !important; }
+  .hero-wedding-of    { margin-bottom: 0 !important; }
+  .hero-content-panel { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+  .eyebrow            { font-size: max(0.9rem,  1.8vw)   !important; }
+  .hero-wedding-of    { font-size: max(1.8rem,  4vw)     !important; }
+  .hero-title-line    { font-size: max(4.5rem,  11vw)    !important; }
+  .hero-title-amp     { font-size: max(2.6rem,  6.5vw)   !important; }
+  .hero-month,
+  .hero-year          { font-size: max(1rem,    2.2vw)   !important; }
+  .hero-date-row span { font-size: max(0.9rem,  2vw)     !important; }
+  .hero-venue         { font-size: max(1.2rem,  2.8vw)   !important; }
+  .hero-address       { font-size: max(0.9rem,  2.2vw)   !important; }
+  .cta-btn            { font-size: max(1rem,    2.2vw)   !important; }
 }
 
-.eyebrow {
-  letter-spacing: 0.25rem;
-  text-transform: uppercase;
-  font-size: 0.8rem;
+/* ══ Phones (≤ 767px) ══ */
+@media (max-width: 767px) {
+  .hero-face-spacer { height: 36vh !important; }
+
+  .eyebrow            { font-size: max(0.82rem, 3.2vw)   !important; }
+  .hero-wedding-of    { font-size: max(1.5rem,  5.5vw)   !important; }
+  .hero-title-line    { font-size: max(4rem,    14vw)    !important; }
+  .hero-title-amp     { font-size: max(2.3rem,  8.5vw)   !important; }
+  .hero-month,
+  .hero-year          { font-size: max(0.9rem,  3.5vw)   !important; }
+  .hero-date-row span { font-size: max(0.82rem, 3.2vw)   !important; }
+  .hero-venue         { font-size: max(1.1rem,  4.2vw)   !important; }
+  .hero-address       { font-size: max(0.82rem, 3.2vw)   !important; }
+  .cta-btn            { font-size: max(0.9rem,  3.5vw)   !important; }
 }
 
-.hero-intro {
-  margin-bottom: 1rem;
+/* ══ Small phones (≤ 430px) ══ */
+@media (max-width: 430px) {
+  .hero-face-spacer { height: 34vh !important; }
+
+  .eyebrow            { font-size: 0.75rem  !important; }
+  .hero-wedding-of    { font-size: 1.35rem  !important; }
+  .hero-title-line    { font-size: 3.4rem   !important; }
+  .hero-title-amp     { font-size: 2rem     !important; }
+  .hero-month,
+  .hero-year          { font-size: 0.85rem  !important; }
+  .hero-date-row span { font-size: 0.75rem  !important; }
+  .hero-venue         { font-size: 1rem     !important; }
+  .hero-address       { font-size: 0.75rem  !important; }
+  .cta-btn            { font-size: 0.85rem  !important; padding: 0.55rem 1.8rem !important; }
 }
 
-.hero-title {
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(3rem, 9vw, 6rem);
-  margin: 0.7rem 0;
+/* ══ Short phones (height ≤ 680px) ══ */
+@media (max-width: 767px) and (max-height: 680px) {
+  .hero-face-spacer { height: 28vh !important; }
+  .hero-title-line  { font-size: 3rem  !important; }
+  .hero-title-amp   { font-size: 1.8rem !important; }
 }
 
-.hero-title span {
-  color: #f8ddd8;
+/* ══ Very short phones (height ≤ 580px) ══ */
+@media (max-width: 767px) and (max-height: 580px) {
+  .hero-face-spacer { height: 20vh !important; }
+  .hero-title-line  { font-size: 2.6rem !important; }
+  .hero-title-amp   { font-size: 1.5rem !important; }
 }
 
-.hero-date-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin: 0.4rem 0;
-}
 
-.hero-day-name,
-.hero-time {
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  white-space: nowrap;
-}
-
-.hero-day-num {
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(3.5rem, 10vw, 6rem);
-  font-weight: 700;
-  line-height: 1;
-}
-
-.hero-date-divider {
-  flex: 1;
-  max-width: 80px;
-  height: 1.5px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 999px;
-}
-
-.hero-month,
-.hero-year {
-  font-size: 2rem;
-  letter-spacing: 0.2em;
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 600;
-  margin: 0.15rem 0;
-}
-
-.hero-venue {
-  font-family: "Cormorant Garamond", serif;
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 1.1rem 0 0.2rem;
-}
-
-.hero-address {
-  font-size: 1.15rem;
-  margin: 0 0 1.8rem;
-}
-
-.cta-btn {
-  display: inline-block;
-  padding: 0.9rem 1.5rem;
-  border-radius: 999px;
-  text-decoration: none;
-  color: var(--text);
-  background: #fff;
-  font-weight: 600;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
+/* CTA button hover (Tailwind can't do arbitrary hex hover inline) */
 .cta-btn:hover {
-  background: #f8e9ec;
-  color: #8d4f6a;
+  background: #f8f0f2 !important;
+  color: #8d4f6a !important;
 }
+
+/* Eyebrow class stubs — GSAP targets these selectors              */
+.eyebrow { margin: 0.05rem 0; line-height: 1.3; }
+.eyebrow-montserrat { font-weight: 400; }
 
 .timeline {
   position: relative;
@@ -871,7 +890,7 @@ body {
 .timeline-item h3 {
   margin: 0 0 0.5rem;
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.7rem;
+  font-size: 1.35rem;
 }
 
 .timeline-item.left {
@@ -892,7 +911,7 @@ body {
   text-align: center;
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #8d6b6b;
   margin: -1rem 0 2rem;
 }
@@ -1021,7 +1040,7 @@ body {
   text-align: center;
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #8d6b6b;
   margin: -1rem 0 2rem;
 }
@@ -1048,7 +1067,7 @@ body {
 
 .event-overview-card h3 {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   margin: 0.5rem 0 0.2rem;
 }
 
@@ -1110,7 +1129,7 @@ body {
 .detail-card h3 {
   margin: 0 0 0.6rem;
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
 }
 
 .detail-image {
@@ -1123,7 +1142,7 @@ body {
 
 .detail-venue-name {
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.45rem;
+  font-size: 1.15rem;
   font-weight: 700;
   margin: 0.1rem 0 0.35rem;
   color: #2f2222;
@@ -1165,7 +1184,7 @@ body {
 
 .countdown-heading {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-size: clamp(1.55rem, 3vw, 2.4rem);
   margin: 0 0 0.5rem;
   font-weight: 700;
 }
@@ -1192,7 +1211,7 @@ body {
 
 .countdown span {
   display: block;
-  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-size: clamp(1.3rem, 2.4vw, 1.85rem);
   font-weight: 700;
   color: var(--gold);
 }
@@ -1205,9 +1224,226 @@ body {
   margin: 1.25rem 0 0;
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: #8d6b6b;
 }
+
+/* ── Entourage ── */
+.entourage-section {
+  background: linear-gradient(180deg, #fffaf7 0%, #fff5f0 100%);
+}
+
+.entourage-title {
+  text-align: center;
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  color: #3b1a28;
+  margin: 0 0 0.6rem;
+  line-height: 1.1;
+}
+
+.entourage-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0 auto 2.2rem;
+  color: #b89146;
+  max-width: 260px;
+}
+.entourage-divider span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #b89146 60%, transparent);
+}
+.entourage-divider svg { flex-shrink: 0; opacity: 0.85; }
+
+.entourage-parents-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(2rem, 6vw, 5rem);
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.entourage-group {
+  text-align: center;
+  min-width: 180px;
+}
+
+.entourage-group-title {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(1.3rem, 2.8vw, 1.9rem);
+  color: #b89146;
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+}
+
+.entourage-block {
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.entourage-section-heading {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  color: #3b1a28;
+  margin: 0 0 0.6rem;
+  position: relative;
+  display: inline-block;
+}
+.entourage-section-heading::after {
+  content: "";
+  display: block;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #b89146, transparent);
+  margin: 0.3rem auto 1rem;
+  width: 80%;
+}
+
+.entourage-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(0.82rem, 1.5vw, 0.98rem);
+  color: #4a2030;
+  margin: 0.18rem 0;
+  line-height: 1.5;
+}
+
+.entourage-name--featured {
+  font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+  font-weight: 600;
+  color: #3b1a28;
+  margin-bottom: 1rem;
+}
+
+.entourage-sponsors-grid {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 4rem);
+  flex-wrap: wrap;
+  text-align: center;
+}
+.entourage-sponsors-col { min-width: 200px; }
+
+.entourage-block--secondary { margin-top: 0.5rem; }
+
+.entourage-secondary-group {
+  margin-bottom: 1rem;
+}
+.entourage-secondary-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(0.78rem, 1.4vw, 0.9rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #b89146;
+  margin: 0 0 0.2rem;
+}
+
+/* ── Collapsible details ── */
+.entourage-details-wrap {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.45s ease,
+              transform 0.45s ease;
+}
+.entourage-details-wrap.open {
+  max-height: 3000px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Toggle / Show Details button ── */
+.entourage-toggle-btn {
+  display: inline-block;
+  padding: 0.75rem 2.5rem;
+  background: #b89146;
+  border: none;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+.entourage-toggle-btn:hover { filter: brightness(0.88); }
+
+.entourage-program-btn-wrap {
+  text-align: center;
+  margin-top: 2.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.entourage-program-btn {
+  display: inline-block;
+  padding: 0.75rem 2.5rem;
+  background: transparent;
+  border: 1.5px solid #b89146;
+  color: #b89146;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background 0.22s, color 0.22s;
+}
+.entourage-program-btn:hover {
+  background: #b89146;
+  color: #fff;
+}
+
+/* ── Program Modal ── */
+.program-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(30, 10, 20, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.program-modal.open {
+  display: flex;
+}
+
+.program-modal-box {
+  background: #fffaf7;
+  border-radius: 1.2rem;
+  max-width: 600px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  position: relative;
+  box-shadow: 0 20px 60px rgba(50, 10, 30, 0.3);
+  border: 1px solid rgba(184, 145, 70, 0.3);
+}
+
+.program-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.1rem;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: #b89146;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.2rem 0.4rem;
+  transition: color 0.18s;
+}
+.program-modal-close:hover { color: #3b1a28; }
 
 /* ── Program ── */
 .program-subtitle {
@@ -1276,7 +1512,7 @@ body {
 .program-body h3 {
   margin: 0 0 0.3rem;
   font-family: "Cormorant Garamond", serif;
-  font-size: 1.45rem;
+  font-size: 1.15rem;
 }
 
 .program-body p {
@@ -1583,7 +1819,7 @@ body {
 
 .rsvp-success-title {
   font-family: "Cormorant Garamond", serif;
-  font-size: 2rem;
+  font-size: 1.6rem;
   margin: 0 0 0.75rem;
   color: var(--text);
 }
@@ -1788,7 +2024,7 @@ body {
 .footer-names {
   margin: 0;
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(1.55rem, 3vw, 2.2rem);
   color: #6f4f4f;
 }
 
@@ -1826,19 +2062,6 @@ body {
     padding: 4.25rem 1rem;
   }
 
-  .hero-month,
-  .hero-year {
-    font-size: 1.45rem;
-  }
-
-  .hero-venue {
-    font-size: 1.55rem;
-  }
-
-  .hero-address {
-    font-size: 1rem;
-  }
-
   .gallery-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1863,35 +2086,7 @@ body {
   }
 
   .brand {
-    font-size: 1.35rem;
-  }
-
-  .hero-content {
-    padding: 0.5rem;
-  }
-
-  .hero-title {
-    font-size: clamp(2.4rem, 12vw, 3.4rem);
-  }
-
-  .eyebrow {
-    letter-spacing: 0.18rem;
-    font-size: 0.72rem;
-  }
-
-  .hero-month,
-  .hero-year {
-    font-size: 1.2rem;
-  }
-
-  .hero-venue {
-    font-size: 1.35rem;
-    margin-top: 0.8rem;
-  }
-
-  .hero-address {
-    font-size: 0.95rem;
-    margin-bottom: 1.2rem;
+    font-size: 1.3rem;
   }
 
   .gallery-grid {

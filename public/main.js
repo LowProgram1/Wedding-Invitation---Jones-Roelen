@@ -211,16 +211,68 @@ gsap.registerPlugin(ScrollTrigger);
    END DIGITAL ENVELOPE
 ══════════════════════════════════════════════════════════════ */
 
+/* Hero fades in, then text animates up */
 const heroTl = gsap.timeline({ defaults: { ease: "power2.out" } });
 heroTl
-  .from(".hero-content .eyebrow", { y: 28, opacity: 0, duration: 0.7 })
-  .from(".hero-title", { y: 40, opacity: 0, duration: 1 }, "-=0.3")
-  .from(".hero-date", { y: 25, opacity: 0, duration: 0.7 }, "-=0.5")
-  .from(".cta-btn", { y: 20, opacity: 0, duration: 0.7 }, "-=0.35");
+  .from("#hero",               { opacity: 0, duration: 1.0, ease: "power3.out" }, 0)
+  .from(".hero-content-panel", { opacity: 0, y: 16, duration: 0.9, ease: "power3.out" }, 0.35)
+  .from("#hero .eyebrow",      { y: 12, opacity: 0, duration: 0.5, stagger: 0.1  }, 0.55)
+  .from(".hero-wedding-of",    { y: 14, opacity: 0, duration: 0.6               }, 0.75)
+  .from(".hero-title-line, .hero-title-amp", { y: 22, opacity: 0, duration: 0.75, stagger: 0.1 }, 0.9)
+  .from(".hero-month, .hero-date-row, .hero-year", { y: 12, opacity: 0, duration: 0.5, stagger: 0.07 }, 1.2)
+  .from(".hero-venue, .hero-address", { y: 10, opacity: 0, duration: 0.45, stagger: 0.07 }, 1.4)
+  .from(".cta-btn",            { y: 10, opacity: 0, duration: 0.45              }, 1.55);
 
-gsap.to(".hero-bg", {
-  scale: 1,
-  yPercent: 8,
+/* ── Hero falling pink petals ── */
+(function initHeroPetals() {
+  const container = document.getElementById("heroPetals");
+  if (!container) return;
+
+  const petalColors = [
+    "rgba(220, 140, 160, 0.72)",
+    "rgba(240, 170, 185, 0.65)",
+    "rgba(255, 182, 193, 0.60)",
+    "rgba(210, 120, 145, 0.68)",
+    "rgba(252, 195, 205, 0.55)",
+    "rgba(230, 155, 170, 0.62)",
+  ];
+  const petalShapes = [
+    "0 80% 0 80%",
+    "80% 0 80% 0",
+    "50% 50% 50% 0",
+    "0 50% 50% 50%",
+  ];
+
+  for (let i = 0; i < 55; i++) {
+    const petal = document.createElement("span");
+    petal.className = "hero-petal";
+    petal.style.background = petalColors[i % petalColors.length];
+    petal.style.left = `${Math.random() * 110 - 5}%`;
+    petal.style.top  = `-${8 + Math.random() * 24}px`;
+
+    const w = 7 + Math.random() * 9;
+    const h = w * (1.1 + Math.random() * 0.7);
+    petal.style.width  = `${w}px`;
+    petal.style.height = `${h}px`;
+    petal.style.borderRadius = petalShapes[i % petalShapes.length];
+
+    container.appendChild(petal);
+
+    gsap.to(petal, {
+      y: window.innerHeight + 80,
+      x: gsap.utils.random(-120, 120),
+      rotation: gsap.utils.random(180, 540),
+      duration: gsap.utils.random(7, 16),
+      repeat: -1,
+      delay: gsap.utils.random(0, 14),
+      ease: "none",
+    });
+  }
+})();
+
+/* Subtle parallax — shift background-position as user scrolls */
+gsap.to("#hero", {
+  backgroundPositionY: "60%",
   ease: "none",
   scrollTrigger: {
     trigger: "#hero",
@@ -229,6 +281,7 @@ gsap.to(".hero-bg", {
     scrub: true,
   },
 });
+
 
 gsap.from(".gallery-item", {
   opacity: 0,
@@ -757,28 +810,51 @@ document.querySelectorAll("[data-carousel]").forEach((carousel) => {
   startTimer();
 });
 
-// Global floating hearts — more count, varied sizes & opacities
-(function spawnGlobalHearts() {
-  const sizes  = [6, 8, 10, 12, 14];
-  const opacities = [0.25, 0.30, 0.35, 0.40, 0.45];
 
-  for (let i = 0; i < 22; i += 1) {
-    const heart = document.createElement("span");
-    heart.className = "floating-heart";
-    const sz = sizes[i % sizes.length];
-    const op = opacities[Math.floor(Math.random() * opacities.length)];
-    heart.style.setProperty("--fh-size", `${sz}px`);
-    heart.style.setProperty("--fh-opacity", op);
-    heart.style.left = `${Math.random() * 100}%`;
-    heart.style.top  = `${70 + Math.random() * 30}%`;
-    floatingLayer.appendChild(heart);
+// Global rose petals — fall from hero-bg downward across the page
+(function spawnGlobalPetals() {
+  if (!floatingLayer) return;
 
-    gsap.to(heart, {
-      y: -window.innerHeight - 150,
-      x: gsap.utils.random(-55, 55),
-      duration: gsap.utils.random(9, 20),
+  const petalColors = [
+    "rgba(220, 140, 160, 0.68)",
+    "rgba(240, 170, 185, 0.60)",
+    "rgba(255, 182, 193, 0.55)",
+    "rgba(210, 120, 145, 0.65)",
+    "rgba(252, 195, 205, 0.50)",
+    "rgba(230, 155, 170, 0.58)",
+    "rgba(245, 160, 175, 0.62)",
+  ];
+  const petalShapes = [
+    "0 80% 0 80%",
+    "80% 0 80% 0",
+    "50% 50% 50% 0",
+    "0 50% 50% 50%",
+    "40% 60% 60% 40%",
+  ];
+
+  for (let i = 0; i < 60; i++) {
+    const petal = document.createElement("span");
+    petal.style.position  = "absolute";
+    petal.style.left      = `${Math.random() * 110 - 5}%`;
+    petal.style.top       = `-${10 + Math.random() * 30}px`;
+    petal.style.background = petalColors[i % petalColors.length];
+    petal.style.borderRadius = petalShapes[i % petalShapes.length];
+    petal.style.pointerEvents = "none";
+
+    const w = 6 + Math.random() * 10;
+    const h = w * (1.1 + Math.random() * 0.8);
+    petal.style.width  = `${w}px`;
+    petal.style.height = `${h}px`;
+
+    floatingLayer.appendChild(petal);
+
+    gsap.to(petal, {
+      y: window.innerHeight + 100,
+      x: gsap.utils.random(-100, 100),
+      rotation: gsap.utils.random(180, 720),
+      duration: gsap.utils.random(8, 18),
       repeat: -1,
-      delay: gsap.utils.random(0, 10),
+      delay: gsap.utils.random(0, 16),
       ease: "none",
     });
   }

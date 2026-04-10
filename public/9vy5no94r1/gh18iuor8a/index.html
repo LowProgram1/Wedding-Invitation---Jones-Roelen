@@ -504,6 +504,8 @@
               allRows.push({ name, guestId, attendance: r.attendance, message: idx === 0 ? (r.message || "") : "", createdAt: r.createdAt, recordId: r.id, isFirst: idx === 0, totalInGroup: r.guestNames.length });
             });
           });
+          // Show newest responses first
+          allRows.reverse();
           // Stamp each row with its allRows index so onclick handlers use safe numeric refs
           allRows.forEach((row, i) => { row._idx = i; });
 
@@ -514,7 +516,7 @@
       }
 
       function generateGuestList() {
-        const attending = allRows.filter(r => r.attendance === "yes");
+        const attending = allRows.filter(r => r.attendance === "yes").sort((a, b) => a.name.localeCompare(b.name));
         const declined = [];
 
         const listHTML = (rows) => rows.map((r, i) => `
@@ -651,7 +653,7 @@
         </svg>
       </div>
       <div class="brand">Jones <span>&</span> Roelen</div>
-      <div class="date">SATURDAY · JUNE 27, 2026 · 2:30 PM</div>
+      <div class="date">SATURDAY · JUNE 27, 2026 · 2:00 PM</div>
       <div class="date" style="margin-top:1mm;font-size:9pt;">Christ the King Cathedral, Koronadal City</div>
     </div>
 

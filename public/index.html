@@ -8,8 +8,37 @@
     <meta name="description" content="A romantic wedding invitation with timeline, gallery, event details, countdown, and RSVP." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Inter:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
+    <!-- Tailwind CSS — custom config must come BEFORE the CDN script -->
+    <script>
+      window.tailwind = {
+        config: {
+          theme: {
+            extend: {
+              fontFamily: {
+                great:      ['"Great Vibes"', 'cursive'],
+                montserrat: ['Montserrat', 'sans-serif'],
+                seasons:    ['"The Seasons"', '"Cormorant Garamond"', 'serif'],
+                cormorant:  ['"Cormorant Garamond"', 'serif'],
+              },
+              colors: {
+                gold:       '#b89146',
+                'gold-hi':  '#d4a84b',
+                blush:      '#f8e7e6',
+                'rose-dk':  '#3b1a28',
+                'rose-txt': '#4a2030',
+                'rose-btn': '#5c2a3e',
+              },
+              dropShadow: {
+                name: ['0 2px 14px rgba(50,10,30,0.35)', '0 1px 3px rgba(0,0,0,0.18)'],
+              },
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
     <!-- ╔══════════════════════════════════════╗ -->
@@ -19,6 +48,15 @@
       <div class="env-bg-particles" id="envBgHearts" aria-hidden="true"></div>
 
       <div class="env-scene">
+
+        <!-- Above-envelope label -->
+        <p class="env-above-label font-great"
+           style="font-family:'Great Vibes',cursive;font-size:clamp(1.6rem,3.5vw,2.4rem);
+                  font-weight:400;letter-spacing:0.04em;text-transform:none;
+                  color:rgba(253,239,208,0.92);text-align:center;margin:0;
+                  text-shadow:0 2px 12px rgba(184,145,70,0.5)">
+          You Are Invited
+        </p>
 
         <!-- Outer glow ring around envelope -->
         <div class="env-glow" aria-hidden="true"></div>
@@ -187,8 +225,9 @@
       <nav id="desktopNav">
         <a href="#hero">Home</a>
         <a href="#details">Details</a>
+        <a href="#program">Entourage</a>
+        <a href="#party">Party</a>
         <a href="#gallery">Gallery</a>
-        <a href="#program">Program</a>
         <a href="#dress-code">Dress Code</a>
         <a href="#gift-guide">Gift Guide</a>
         <a href="#rsvp">RSVP</a>
@@ -203,8 +242,9 @@
       <nav class="mobile-menu-nav">
         <a href="#hero">Home</a>
         <a href="#details">Details</a>
+        <a href="#program">Entourage</a>
+        <a href="#party">Party</a>
         <a href="#gallery">Gallery</a>
-        <a href="#program">Program</a>
         <a href="#dress-code">Dress Code</a>
         <a href="#gift-guide">Gift Guide</a>
         <a href="#rsvp">RSVP</a>
@@ -212,29 +252,155 @@
     </div>
 
     <main>
-      <section id="hero" class="hero section">
-        <div class="hero-bg"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <div class="hero-intro">
-            <p class="eyebrow">WITH JOY</p>
-            <p class="eyebrow">YOU ARE INVITED TO</p>
-            <p class="eyebrow">THE WEDDING OF</p>
+      <!-- ══════════════════════════════════════════════════════
+           HERO — layered PNG composition (all images are 1920×1080)
+           ─────────────────────────────────────────────────────────
+           HOW IT WORKS
+           • Every layer is "absolute inset-0 w-full h-full object-cover"
+             → they all fill the viewport identically, perfectly aligned.
+           • church-bg.png is the base (no blend).
+           • Every other PNG has a white background where there is "nothing".
+             mix-blend-mode:multiply turns white (255,255,255) → the colour
+             below it, making it invisible. Coloured pixels stay visible.
+           • Result: the layers compose into one seamless scene at any size.
+
+           RESPONSIVE BEHAVIOUR
+           • object-fit:cover + object-position:center keeps the couple
+             centred and crops symmetrically on any viewport (16:9, 4:3,
+             mobile portrait, etc.).
+           • Text uses clamp() for fluid font sizes and vh for spacing so
+             proportions are preserved across all screen sizes.
+
+           Layer order (bottom → top)
+             0  church-bg.png    pink church backdrop        (no blend)
+             1  Groom-Bride.png  couple cutout               (multiply)
+             2  left-flower.png  bottom-left rose cluster    (multiply)
+             3  right-flower.png bottom-right rose cluster   (multiply)
+             4  ring.png         gold rings decoration       (multiply)
+             5  #heroPetals      falling petal animation
+             6  text overlay
+      ══════════════════════════════════════════════════════ -->
+      <section
+        id="hero"
+        class="hero"
+        style="position:relative;width:100%;min-height:100vh;overflow:hidden;
+               background: #1a0e14"
+      >
+
+        <!-- L1 · Church watermark — wide landscape, full cover, ghosted -->
+        <img src="/uploads/hero-Bg/church-bg.svg"
+             class="hero-church"
+             aria-hidden="true" alt="" loading="eager">
+
+        <!-- L2 · Couple photo — centered, fills hero height -->
+        <img src="/uploads/hero-Bg/Groom-Bride.svg"
+             class="hero-couple"
+             aria-hidden="true" alt="" loading="eager">
+
+
+        <!-- L6 · Text + CTA overlay -->
+        <div
+          class="hero-content-panel"
+          style="position:absolute;top:0;left:0;right:0;bottom:0;
+                 display:flex;flex-direction:column;align-items:center;
+                 justify-content:flex-start;text-align:center;
+                 z-index:10;pointer-events:none"
+        >
+          <div style="width:100%;display:flex;flex-direction:column;align-items:center;
+                      padding:clamp(1.2rem,3vh,2.8rem) 1rem clamp(1rem,2vh,1.8rem);pointer-events:none">
+
+            <!-- Eyebrow -->
+            <div class="hero-intro" style="margin-bottom:0.3rem">
+              <p class="eyebrow uppercase leading-snug"
+                 style="font-family:'Montserrat',sans-serif;font-size:clamp(0.42rem,0.75vw,0.62rem);color:#a86068;margin:0;font-weight:500;letter-spacing:0.25em">With Joy</p>
+              <p class="eyebrow uppercase leading-snug"
+                 style="font-family:'Montserrat',sans-serif;font-size:clamp(0.38rem,0.65vw,0.55rem);color:#a86068;margin:0.08rem 0;font-weight:300;letter-spacing:0.3em">You Are Invited To</p>
+            </div>
+
+            <!-- THE WEDDING OF -->
+            <p class="hero-wedding-of font-seasons uppercase tracking-[0.08em] leading-none"
+               style="font-family:'The Seasons','Cormorant Garamond',serif;font-size:clamp(1.2rem,3.5vw,2.8rem);color:#c87276;margin:0 0 0.1rem;
+                      text-shadow:none;
+                      font-weight:700">THE WEDDING OF</p>
+
+            <!-- Face spacer — lets couple's faces show above names -->
+            <div class="hero-face-spacer" style="height:clamp(4rem,24vh,12rem);flex-shrink:0" aria-hidden="true"></div>
+
+            <!-- Names -->
+            <h1 class="hero-title"
+                style="display:inline-flex;flex-direction:column;align-items:flex-start;line-height:1;margin:0 0 0.2rem;gap:0">
+              <!-- Line 1: Jones -->
+              <span class="hero-title-line font-great"
+                    style="font-family:'Great Vibes',cursive;font-size:clamp(2.6rem,6vw,4.8rem);line-height:0.8;color:#fff;
+                           text-shadow:0 2px 20px rgba(80,15,35,0.45),0 1px 6px rgba(80,15,35,0.3)">Jones</span>
+              <!-- Line 2: & [ring] -->
+              <span class="hero-title-amp font-great"
+                    style="font-family:'Great Vibes',cursive;font-size:clamp(1.5rem,3.5vw,2.8rem);line-height:0.85;color:#fff;
+                           text-shadow:0 1px 10px rgba(80,15,35,0.35);
+                           display:flex;align-items:center;gap:0.4rem;align-self:flex-end">
+                &amp;
+                <img src="/uploads/hero-Bg/ring.svg" aria-hidden="true" alt=""
+                     style="width:clamp(42px,5.5vw,72px);height:auto;vertical-align:middle;
+                            filter:drop-shadow(0 1px 4px rgba(184,145,70,0.7))">
+              </span>
+              <!-- Line 3: Roelen -->
+              <span class="hero-title-line font-great"
+                    style="font-family:'Great Vibes',cursive;font-size:clamp(2.6rem,6vw,4.8rem);line-height:0.8;color:#fff;
+                           text-shadow:0 2px 20px rgba(80,15,35,0.45),0 1px 6px rgba(80,15,35,0.3)">Roelen</span>
+            </h1>
+
+            <!-- CTA — directly below Roelen -->
+            <a href="#rsvp"
+               class="cta-btn font-montserrat font-semibold tracking-wide"
+               style="font-size:clamp(0.72rem,1.8vw,0.9rem);
+                      margin-top:clamp(0.6rem,1.5vh,1.2rem);
+                      padding:0.55rem 2rem;pointer-events:auto;
+                      background:#fff;color:#5c2a3e;border-radius:9999px;
+                      box-shadow:0 2px 14px rgba(80,15,35,0.28);
+                      text-decoration:none;display:inline-block;letter-spacing:0.05em;
+                      white-space:nowrap"
+            >Open Invitation</a>
+
+            <!-- Month -->
+            <p class="hero-month font-montserrat uppercase tracking-[0.28em] font-medium"
+               style="font-size:clamp(0.62rem,1.2vw,0.95rem);color:#fff;
+                      margin:0.55rem 0 0.22rem;text-shadow:0 1px 6px rgba(80,15,35,0.35)">JUNE</p>
+
+            <!-- Date pill -->
+            <div class="hero-date-row"
+                 style="display:inline-flex;align-items:center;gap:0.7rem;
+                        background:rgba(80,20,40,0.78);border-radius:9999px;
+                        padding:0.2rem 1.1rem;margin:0.15rem 0">
+              <span class="font-montserrat text-white uppercase font-semibold tracking-wide"
+                    style="font-size:clamp(0.48rem,0.8vw,0.68rem);white-space:nowrap;color:#fff">SATURDAY</span>
+              <div style="width:1px;height:1.1rem;background:rgba(255,255,255,0.45);flex-shrink:0"></div>
+              <span class="font-montserrat font-bold"
+                    style="font-size:clamp(1.2rem,2.1vw,1.75rem);line-height:1;color:#fff">27</span>
+              <div style="width:1px;height:1.1rem;background:rgba(255,255,255,0.45);flex-shrink:0"></div>
+              <span class="font-montserrat text-white uppercase font-semibold tracking-wide"
+                    style="font-size:clamp(0.48rem,0.8vw,0.68rem);white-space:nowrap;color:#fff">AT 2:00 PM</span>
+            </div>
+
+            <!-- Year -->
+            <p class="hero-year font-montserrat uppercase tracking-[0.28em] font-medium"
+               style="font-size:clamp(0.62rem,1.2vw,0.95rem);color:#fff;
+                      margin:0.22rem 0 0.45rem;text-shadow:0 1px 6px rgba(80,15,35,0.35)">2026</p>
+
+            <!-- Venue -->
+            <p class="hero-venue font-montserrat font-semibold"
+               style="font-size:clamp(0.82rem,1.45vw,1.18rem);color:#fff;
+                      text-shadow:0 1px 8px rgba(80,15,35,0.4);margin:0.2rem 0 0.08rem">
+              Christ the King Cathedral</p>
+
+            <!-- Address -->
+            <p class="hero-address font-montserrat font-light tracking-wide"
+               style="font-size:clamp(0.5rem,0.85vw,0.72rem);color:rgba(255,255,255,0.9);
+                      margin:0">Alunan Avenue, City of Koronadal</p>
+
           </div>
-          <h1 class="hero-title">Jones <span>&</span> Roelen</h1>
-          <p class="hero-month">JUNE</p>
-          <div class="hero-date-row">
-            <span class="hero-day-name">SATURDAY</span>
-            <div class="hero-date-divider"></div>
-            <span class="hero-day-num">27</span>
-            <div class="hero-date-divider"></div>
-            <span class="hero-time">AT 2:30 PM</span>
-          </div>
-          <p class="hero-year">2026</p>
-          <p class="hero-venue">Christ the King Cathedral</p>
-          <p class="hero-address">Alunan Avenue, City of Koronadal</p>
-          <a href="#rsvp" class="cta-btn">Open Invitation</a>
-        </div>
+
+        </div><!-- /L6 -->
+
       </section>
 
       <section id="details" class="section section-soft">
@@ -249,7 +415,7 @@
               </div>
               <h3>Ceremony</h3>
               <p>June 27, 2026</p>
-              <p>2:30 PM</p>
+              <p>2:00 PM</p>
               <p>Christ the King Cathedral</p>
             </div>
             <div class="event-overview-card">
@@ -314,26 +480,136 @@
         </div>
       </section>
 
-      <section id="gallery" class="section">
+      <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
+      <section id="program" class="section section-soft entourage-section">
+        <div class="section-hearts" id="programHearts" aria-hidden="true"></div>
         <div class="container">
-          <h2 class="section-title">Our Gallery</h2>
-          <p class="gallery-subtitle">Moments we've cherished together</p>
-          <div class="gallery-grid">
-            <div class="gallery-item"><img src="/uploads/gallery/1.jpg" alt="Pre-wedding photo 1" /></div>
-            <div class="gallery-item"><img src="/uploads/gallery/2.jpeg" alt="Pre-wedding photo 2" /></div>
-            <div class="gallery-item"><img src="/uploads/gallery/3.jpg" alt="Pre-wedding photo 3" /></div>
-            <div class="gallery-item"><img src="/uploads/gallery/4.jpeg" alt="Pre-wedding photo 4" /></div>
-            <div class="gallery-item"><img src="/uploads/gallery/5.jpg" alt="Pre-wedding photo 5" /></div>
-            <div class="gallery-item"><img src="/uploads/gallery/6.jpeg" alt="Pre-wedding photo 6" /></div>
+
+          <!-- Section Title -->
+          <h2 class="entourage-title font-great">The Entourage</h2>
+          <div class="entourage-divider" aria-hidden="true">
+            <span></span>
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+              <circle cx="10" cy="7" r="4.5" stroke="#b89146" stroke-width="1.2"/>
+              <circle cx="10" cy="14" r="4.5" stroke="#b89146" stroke-width="1.2"/>
+            </svg>
+            <span></span>
           </div>
+
+          <!-- Parents -->
+          <div class="entourage-parents-row">
+            <div class="entourage-group">
+              <h3 class="entourage-group-title font-great">Parents of the Bride</h3>
+              <p class="entourage-name">Robert Echalico</p>
+              <p class="entourage-name">Rolinda Batallones</p>
+            </div>
+            <div class="entourage-group">
+              <h3 class="entourage-group-title font-great">Parents of the Groom</h3>
+              <p class="entourage-name">Alfredo Paulite Jr.</p>
+              <p class="entourage-name">Anna Jane Paulite</p>
+            </div>
+          </div>
+
+          <!-- Collapsible Sponsors -->
+          <div class="entourage-details-wrap" id="entourageDetails" aria-hidden="true">
+
+            <!-- Principal Sponsors -->
+            <div class="entourage-block">
+              <h3 class="entourage-section-heading font-great">Principal Sponsors</h3>
+              <p class="entourage-name entourage-name--featured">Engr. Orlando P. Batallones</p>
+              <div class="entourage-sponsors-grid">
+                <div class="entourage-sponsors-col">
+                  <p class="entourage-name">Gov. Reynaldo S. Tamayo, Jr.</p>
+                  <p class="entourage-name">Argie Ryan Asaria</p>
+                  <p class="entourage-name">William Varron Jr.</p>
+                  <p class="entourage-name">Eduardo Batallones</p>
+                  <p class="entourage-name">Owen Batallones</p>
+                  <p class="entourage-name">Greg Sydney</p>
+                  <p class="entourage-name">Leopoldo Echalico</p>
+                  <p class="entourage-name">Remelito Lebaquin</p>
+                  <p class="entourage-name">Romeo Paredes</p>
+                  <p class="entourage-name">Arnel Daro</p>
+                  <p class="entourage-name">Dennis Batallones</p>
+                  <p class="entourage-name">Romeo Batallones Jr.</p>
+                  <p class="entourage-name">Rudy Jimenea</p>
+                  <p class="entourage-name">Francisco Cerbo</p>
+                  <p class="entourage-name">Richie Matunding</p>
+                  <p class="entourage-name">Julius Mella</p>
+                  <p class="entourage-name">Indira Cagaanan</p>
+                  <p class="entourage-name">Nita Ponce De Leon</p>
+                  <p class="entourage-name">Jeannette Nataya</p>
+                  <p class="entourage-name">Godfrey Rowell Batallones</p>
+                  <p class="entourage-name">Juhmar 1 Pasalo</p>
+                  <p class="entourage-name">Hazel Jane Debarbo</p>
+                  <p class="entourage-name">Nenita Baroquillo</p>
+                </div>
+                <div class="entourage-sponsors-col">
+                  <p class="entourage-name">Vice Gov. Arthur Y. Pingoy</p>
+                  <p class="entourage-name">Ronald Jones Hinay</p>
+                  <p class="entourage-name">Marisa Varron</p>
+                  <p class="entourage-name">Estrella Batallones</p>
+                  <p class="entourage-name">Susan Batallones</p>
+                  <p class="entourage-name">Annie Sydney</p>
+                  <p class="entourage-name">Lilia Echalico</p>
+                  <p class="entourage-name">Josefina C. Lebaquin</p>
+                  <p class="entourage-name">Maylene Paredes</p>
+                  <p class="entourage-name">Marlene Daro</p>
+                  <p class="entourage-name">Gina Batallones</p>
+                  <p class="entourage-name">Sheila Batallones</p>
+                  <p class="entourage-name">Anne Rose Kazan</p>
+                  <p class="entourage-name">Freda Liza Gazo</p>
+                  <p class="entourage-name">Emily Daban</p>
+                  <p class="entourage-name">Annaliza Mondejar</p>
+                  <p class="entourage-name">Sheila May Gayol</p>
+                  <p class="entourage-name">Maria Anna Uy</p>
+                  <p class="entourage-name">Helen P. Nicolas</p>
+                  <p class="entourage-name">Liza Batallones</p>
+                  <p class="entourage-name">Mary Dee Miguel</p>
+                  <p class="entourage-name">Salvacion Bermil</p>
+                  <p class="entourage-name">Mary Jane Belgera</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Secondary Sponsors -->
+            <div class="entourage-block entourage-block--secondary">
+              <h3 class="entourage-section-heading font-great">Secondary Sponsors</h3>
+              <div class="entourage-secondary-group">
+                <p class="entourage-secondary-label">To Light Our Path</p>
+                <p class="entourage-name">Engr. Denmark Batallones &nbsp;&nbsp; Engr. Kristel Joy Segovia</p>
+              </div>
+              <div class="entourage-secondary-group">
+                <p class="entourage-secondary-label">To Clothe as Us One</p>
+                <p class="entourage-name">John Anthony Magno &nbsp;&nbsp; Jessa Mae Ponce</p>
+              </div>
+              <div class="entourage-secondary-group">
+                <p class="entourage-secondary-label">To Bind Us Together</p>
+                <p class="entourage-name">Engr. Romeo Nataya Jr. &nbsp;&nbsp; Maylene Nicolas</p>
+              </div>
+            </div>
+
+          </div><!-- /entourageDetails -->
+
+          <!-- Buttons -->
+          <div class="entourage-program-btn-wrap" style="display:flex;flex-direction:column;align-items:center;gap:0.75rem">
+            <button class="entourage-toggle-btn font-montserrat" id="entourageToggleBtn"
+                    onclick="toggleDetails('entourageDetails','entourageToggleBtn')"
+                    aria-expanded="false">
+              Show Details
+            </button>
+            <button class="cta-btn entourage-program-btn font-montserrat" onclick="document.getElementById('programModal').classList.add('open')" aria-label="View wedding program">
+              Program
+            </button>
+          </div>
+
         </div>
       </section>
 
-      <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
-      <section id="program" class="section section-soft">
-        <div class="section-hearts" id="programHearts" aria-hidden="true"></div>
-        <div class="container">
-          <h2 class="section-title">Wedding Program</h2>
+      <!-- ══ Program Modal ══ -->
+      <div id="programModal" class="program-modal" role="dialog" aria-modal="true" aria-label="Wedding Program" onclick="if(event.target===this)this.classList.remove('open')">
+        <div class="program-modal-box">
+          <button class="program-modal-close" onclick="document.getElementById('programModal').classList.remove('open')" aria-label="Close program">&times;</button>
+          <h2 class="entourage-title font-great" style="font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:0.4rem">Wedding Program</h2>
           <p class="program-subtitle">A glimpse into our special day</p>
           <div class="program-list">
             <div class="program-item">
@@ -386,6 +662,130 @@
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
+      <section id="party" class="section section-soft entourage-section">
+        <div class="section-hearts" id="partyHearts" aria-hidden="true"></div>
+        <div class="container">
+
+          <h2 class="entourage-title font-great">Wedding Party</h2>
+          <div class="entourage-divider" aria-hidden="true">
+            <span></span>
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18">
+              <circle cx="10" cy="7" r="4.5" stroke="#b89146" stroke-width="1.2"/>
+              <circle cx="10" cy="14" r="4.5" stroke="#b89146" stroke-width="1.2"/>
+            </svg>
+            <span></span>
+          </div>
+
+          <!-- Maid of Honor & Best Man — always visible -->
+          <div class="entourage-parents-row">
+            <div class="entourage-group">
+              <h3 class="entourage-group-title font-great">Maid of Honor</h3>
+              <p class="entourage-name">Rolen Joy Echalico</p>
+            </div>
+            <div class="entourage-group">
+              <h3 class="entourage-group-title font-great">Best Man</h3>
+              <p class="entourage-name">Jerald T. Kasim</p>
+            </div>
+          </div>
+
+          <!-- Collapsible party details -->
+          <div class="entourage-details-wrap" id="partyDetails" aria-hidden="true">
+
+            <div class="entourage-parents-row" style="align-items:flex-start">
+              <div class="entourage-group">
+                <h3 class="entourage-group-title font-great">Bridesmaids</h3>
+                <p class="entourage-name">Arlene Daro</p>
+                <p class="entourage-name">Lean Batallones</p>
+                <p class="entourage-name">Krishylle Mae Barluado</p>
+                <p class="entourage-name">Debbie Jan Ranis</p>
+                <p class="entourage-name">An Jolyn Ranis</p>
+                <p class="entourage-name">Ara Wella Varron</p>
+                <p class="entourage-name">Regine Pagara</p>
+                <p class="entourage-name">Kassandra Sydney</p>
+              </div>
+              <div class="entourage-group">
+                <h3 class="entourage-group-title font-great">Groomsmen</h3>
+                <p class="entourage-name">Arlan Roi Mamon</p>
+                <p class="entourage-name">Rainer Deo Dela Cruz</p>
+                <p class="entourage-name">Kristian Varron</p>
+                <p class="entourage-name">Arjay Dedel</p>
+                <p class="entourage-name">Patrick Andrie Rendon</p>
+                <p class="entourage-name">Adrian Paul Aguillon</p>
+                <p class="entourage-name">Rave Bautista</p>
+                <p class="entourage-name">Christian Fermin Gonzales</p>
+              </div>
+            </div>
+
+            <div class="entourage-parents-row" style="align-items:flex-start">
+              <div class="entourage-group">
+                <h3 class="entourage-group-title font-great">Flower Ladies</h3>
+                <p class="entourage-name">Althea Magno</p>
+                <p class="entourage-name">Jan Alexis Nicole Magno</p>
+                <p class="entourage-name">Sophia Lorraine Batallones</p>
+                <p class="entourage-name">Pauline Jasmine Daro</p>
+                <p class="entourage-name">Ezriela Dee Nataya</p>
+                <p class="entourage-name">Mariane Bless Batallones</p>
+                <p class="entourage-name">Jennyl Hezekia Reyn Rioja</p>
+                <p class="entourage-name">Hyziah Ross Fuentes</p>
+                <p class="entourage-name">Charmis Giselle Gersava</p>
+              </div>
+              <div class="entourage-group">
+                <h3 class="entourage-group-title font-great">Flower Girls</h3>
+                <p class="entourage-name">Kiarah Elise Magno</p>
+                <p class="entourage-name">Ma. Joefelle Suzane Batallones</p>
+                <p class="entourage-name">Anastasia Abellana</p>
+                <p class="entourage-name">Athena Chloe Jayne Ranis</p>
+                <p class="entourage-name">Afreya Ziphanie Ranis</p>
+                <p class="entourage-name">Zoe Dedel</p>
+                <p class="entourage-name">Marian Jane Claro</p>
+              </div>
+            </div>
+
+            <div class="entourage-block entourage-block--secondary">
+              <div class="entourage-secondary-group">
+                <p class="entourage-secondary-label">Bible Bearer</p>
+                <p class="entourage-name">Genniel Reyn Rioja</p>
+              </div>
+              <div class="entourage-secondary-group">
+                <p class="entourage-secondary-label">Coin Bearer</p>
+                <p class="entourage-name">Jezriel Dee Nataya</p>
+              </div>
+              <div class="entourage-secondary-group">
+                <p class="entourage-secondary-label">Ring Bearer</p>
+                <p class="entourage-name">Elijah Reyn Rioja</p>
+              </div>
+            </div>
+
+          </div><!-- /partyDetails -->
+
+          <div class="entourage-program-btn-wrap">
+            <button class="entourage-toggle-btn font-montserrat" id="partyToggleBtn"
+                    onclick="toggleDetails('partyDetails','partyToggleBtn')"
+                    aria-expanded="false">
+              Show Details
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
+      <section id="gallery" class="section">
+        <div class="container">
+          <h2 class="section-title">Our Gallery</h2>
+          <p class="gallery-subtitle">Moments we've cherished together</p>
+          <div class="gallery-grid">
+            <div class="gallery-item"><img src="/uploads/gallery/1.jpg" alt="Pre-wedding photo 1" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/2.jpg" alt="Pre-wedding photo 2" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/3.jpg" alt="Pre-wedding photo 3" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/4.jpg" alt="Pre-wedding photo 4" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/5.jpg" alt="Pre-wedding photo 5" /></div>
+            <div class="gallery-item"><img src="/uploads/gallery/6.jpg" alt="Pre-wedding photo 6" /></div>
+          </div>
+        </div>
       </section>
 
       <div class="section-separator" aria-hidden="true"><span></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z"/></svg><span></span></div>
@@ -422,8 +822,8 @@
             <p>A monetary gift is one we suggest.</p>
           </div>
           <div class="gift-actions">
-            <button type="button" class="gift-btn" data-gift-type="gcash" data-gift-image="/uploads/qr/gcash.jpg" data-gift-label="GCash">GCash QR</button>
-            <button type="button" class="gift-btn gift-btn-outline" data-gift-type="bank" data-gift-image="/uploads/qr/landbank.jpg" data-gift-label="Bank">Bank QR</button>
+            <button type="button" class="gift-btn" data-gift-type="gcash" data-gift-image="/uploads/qr/gcash.svg" data-gift-label="GCash">GCash QR</button>
+            <button type="button" class="gift-btn gift-btn-outline" data-gift-type="bank" data-gift-image="/uploads/qr/landbank.svg" data-gift-label="Bank">Bank QR</button>
           </div>
         </div>
       </section>
@@ -521,5 +921,15 @@
     </div>
 
     <script src="/main.js"></script>
+    <script>
+      function toggleDetails(detailsId, btnId) {
+        const details = document.getElementById(detailsId);
+        const btn     = document.getElementById(btnId);
+        const isOpen  = details.classList.toggle('open');
+        details.setAttribute('aria-hidden', !isOpen);
+        btn.setAttribute('aria-expanded', isOpen);
+        btn.textContent = isOpen ? 'Hide Details' : 'Show Details';
+      }
+    </script>
   </body>
 </html>
